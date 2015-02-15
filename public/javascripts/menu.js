@@ -7,6 +7,7 @@
             var parsed = JSON.parse(d);
 
             // this is the object from the api
+            console.log(parsed);
             var digging = parsed.venues[0].menus[0].sections;
             //div or menu items on main page
             var menu_section = document.getElementById('menu');
