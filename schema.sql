@@ -28,3 +28,9 @@ CREATE TABLE receipts (
           updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- CREATE TABLE friends (
+--           id INTEGER PRIMARY KEY,
+--           friend_one INTEGER,
+--           friend_two INTEGER,
+--           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- )

@@ -18,30 +18,43 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(session({
   secret: "penguin",
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
 }));
+
+//these are set upon login
+var session_info = {
+  username : "",
+  friends : []
+}
+
 
 
 // homepage
 app.get('/', function(req, res) {
-  	res.render('index.ejs'); //add any items to send over via ejs
+  if(req.session.valid_user === true){
+    var friends = session_info.friends
+  	res.render('index.ejs', {friends: friends}); //add any items to send over via ejs
+  }
+  else{
+    res.redirect('/login')
+  }
 });
 
+
+
+//login page
 app.get('/login', function(req, res){
     res.render('login.ejs');
 });
 
 
 //new user
+//need to add it so multipe users can't sign up
 app.post('/user', function(req, res){
   var first_name = req.body.first_name;
-  console.log(first_name);
   var last_name = req.body.last_name;
-  console.log(last_name)
   var email = req.body.email;
-  console.log(email)
   var avatar_url = req.body.avatar_url;
-  console.log(avatar_url)
   var username = req.body.username;
   var password = req.body.password;
   var confirm_password = req.body.confirm_password;
@@ -54,7 +67,8 @@ app.post('/user', function(req, res){
       if(err){ throw err;}
       else{
       req.session.valid_user = true;
-      res.redirect('/menu');
+      session_info.username = username;
+      res.redirect('/');
       }
     });
   }
@@ -65,7 +79,7 @@ app.post('/user', function(req, res){
 
 
 
-//login
+//login session
 app.post('/session', function(req, res){
   var username = req.body.username;
   var password = req.body.password;
@@ -75,20 +89,25 @@ app.post('/session', function(req, res){
       var passwordMatches = bcrypt.compareSync(password, row.password);
       if(passwordMatches){
       req.session.valid_user = true;
+      //captures the username for the current session
+      session_info.username = username;
       res.redirect('/menu') 
     }
-    else{ res.redirect('/') }
+    else{ res.redirect('/login') }
   }
   })
 
 })
 
-
+//need to make a sign out
 
 
 
 app.get('/menu', function(req, res){
   if(req.session.valid_user === true){
+  //this calls the findFriends function which sets the session_info, friends to the
+  //results of the findFriends function (below)
+  findFriends(session_info.username, session_info.friends)
   res.render('menu.ejs')
   }
   else{
@@ -96,17 +115,88 @@ app.get('/menu', function(req, res){
   }
 })
 
-// sends menu items from the below api request
+
+  //!!!!!!!!!!!!
+  //!!!!!!!!!!!!
+  //FINDS FRIENDS FROM THE FRIENDS TABLE
+  //YOU PASS IT THE USERNAME OF THE USER WHO'S FRIENDS YOU'RE LOOKING FOR
+  //CALLED FROM /menu
+var findFriends = function(username, friends){
+  //finds the id of the passed in user
+  db.get('SELECT * FROM users WHERE username = ?', username, function(err, row){
+    var id = row.id;
+    getFriends(id);
+  })
+  //function is called that passes in the id of the user
+  var getFriends = function(id){
+  //two db.all that searches through each column of friends table looking for
+  //the users id. If it finds it it passes it's corrisponding friend to the friend_ids array
+  db.all('SELECT * FROM friends WHERE friend_one = ?', id, function(err, row_one){
+    var friend_ids = [];
+        if(row_one.length > 0){
+          for(var i = 0; i < row_one.length; i++){          
+              friend_ids.push(row_one[i].friend_two);
+          }   
+        }
+
+    db.all('SELECT * FROM friends WHERE friend_two = ?', id, function(err, row_two){
+        if(row_two.length > 0){
+          for(var x = 0; x < row_two.length; x++){
+          friend_ids.push(row_two[x].friend_one);
+            if(row_one.length + row_two.length === friend_ids.length){
+              sendFriends(friend_ids)
+            }
+          }
+        }
+      else{
+        if(row_one.length + row_two.length === friend_ids.length){
+          sendFriends(friend_ids)
+        }
+      }
+
+    })//end second db.all
+
+  })//end first db.all
+
+} //end getFriends
+  //this will loop through all of the friend ids, and return their info.
+  var sendFriends = function(friend_array){
+    var friend_info = [];
+    for(var x = 0; x < friend_array.length; x++){
+    db.all('SELECT username, first_name, last_name, email, avatar_url FROM users WHERE id = ?', friend_array[x], function(err, row){
+        friend_info.push(row)
+      if(friend_info.length === friend_array.length){
+        // console.log(friend_info)
+        friend_info.forEach(function(each){
+          session_info.friends.push(each);
+          // console.log(each)
+        })
+        // return friend_info
+      }
+    })//end db.all
+
+    } 
+
+  }//end sendFriends
+
+}// end findFriends Function
+//!!!!!!!!!!!
+//!!!!!!!!!!!
+
+
+
+
+//!!!!!!!!!!
+//!!!!!!!!!!
+// gets the restaurant info can call with ajax
 app.get('/api_info', function(req, res){
   res.header('Access-Control-Allow-Origin', '*');
   res.send(content);
 })
 
-
-
 //begin
 var menuData = {
-  "api_key" : "fcec945baccf86e8829f5a34b95f0aeeaecdd3d3",
+  "api_key" : "[locu_api_key]",
   "fields" : [
     "locu_id",
     "name",
@@ -130,11 +220,8 @@ var content = ""
 var menuRequest = request.post('https://api.locu.com/v2/venue/search', {form: JSON.stringify(menuData)}, function(err, httpResponse, body) {
     content = body;
 });
-
-console.log(content)
-
-
-
+//!!!!!!!!!!
+//!!!!!!!!!!
 
 
 
