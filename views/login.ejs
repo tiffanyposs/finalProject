@@ -1,0 +1,57 @@
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title></title>
+      <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body>
+
+<!-- Where all the menu items get appended -->
+<!-- created in menu.js -->
+<section class = "container-fluid">
+    <div class = "row">
+
+    <div class = "col-md-3" >
+      <h3>LogIn</h3>
+      <form action="session" method="POST">
+        <input name="username" placeholder = "username">
+        <input name="password" type = "password" placeholder = "password">
+        <button></button>
+      </form>
+    </div>
+    <div class = "col-md-3">
+      <h3>New Users</h3>
+      <form action="user" method="POST">
+        <input name="first_name" placeholder = "first name">
+        <input name="last_name" placeholder = "last name">
+        <input name="email" placeholder = "email">
+        <input name="avatar_url" placeholder = "Url For Avatar">
+        <input name="username" placeholder = "username">
+        <input name="password" type = "password" placeholder = "password">
+        <input name="confirm_password" type = "password" placeholder = "confirm password">
+        <button></button>
+      </form>
+    </div>
+    </div>
+</section>
+
+
+
+<!-- this is my menu dom -->
+
+
+
+<!-- Bootstrap JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+
+
+</body>
+</html>
+
