@@ -32,7 +32,7 @@ var session_info = {
 // homepage
 app.get('/', function(req, res) {
   if(req.session.valid_user === true){
-    var friends = session_info.friends
+    var friends = session_info.friends;
   	res.render('index.ejs', {friends: friends}); //add any items to send over via ejs
   }
   else{
@@ -68,7 +68,7 @@ app.post('/user', function(req, res){
       else{
       req.session.valid_user = true;
       session_info.username = username;
-      res.redirect('/');
+      res.redirect('/loading');
       }
     });
   }
@@ -91,7 +91,7 @@ app.post('/session', function(req, res){
       req.session.valid_user = true;
       //captures the username for the current session
       session_info.username = username;
-      res.redirect('/menu') 
+      res.redirect('/loading') 
     }
     else{ res.redirect('/login') }
   }
@@ -102,13 +102,21 @@ app.post('/session', function(req, res){
 //need to make a sign out
 
 
+//this makes sure the content loads before it gets to the main login page
+app.get('/loading', function(req, res){
+    if(req.session.valid_user === true){
+        findFriends(session_info.username, session_info.friends);
+        res.redirect('/')
+        // setTimeout(function(){ res.redirect('/') }, 1000);
+    }
+})
+
+
 
 app.get('/menu', function(req, res){
   if(req.session.valid_user === true){
-  //this calls the findFriends function which sets the session_info, friends to the
-  //results of the findFriends function (below)
-  findFriends(session_info.username, session_info.friends)
-  res.render('menu.ejs')
+    var friends = session_info.friends;
+    res.render('menu.ejs', {friends: friends})
   }
   else{
     res.redirect('/')
@@ -196,7 +204,7 @@ app.get('/api_info', function(req, res){
 
 //begin
 var menuData = {
-  "api_key" : "[locu_api_key]",
+  "api_key" : "[locu-key-here]",
   "fields" : [
     "locu_id",
     "name",
@@ -209,11 +217,18 @@ var menuData = {
   ],
   "venue_queries" : [
     {
-      "name": "bistro central parc",
+      "name": "buvette",
       "menus" : { "$present" : true }
     }
   ]
 }
+// buttermilk channel
+// union square cafe
+// fedora
+// the dutch
+//narcissa
+// bistro central parc
+// http://www.timeout.com/newyork/restaurants/100-best-new-york-restaurants-american?package_page=35907
 
 var content = ""
 
@@ -222,8 +237,5 @@ var menuRequest = request.post('https://api.locu.com/v2/venue/search', {form: JS
 });
 //!!!!!!!!!!
 //!!!!!!!!!!
-
-
-
 
 app.listen(3000)

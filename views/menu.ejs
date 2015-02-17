@@ -1,6 +1,10 @@
 <html lang="en">
 <head>
-
+<style>
+  img{
+    height: 200px;
+  }
+</style>
     <meta charset="UTF-8">
     <title></title>
       <!-- Bootstrap CSS -->
@@ -14,11 +18,38 @@
 <!-- Where all the menu items get appended -->
 <!-- created in menu.js -->
 <section class = "container-fluid">
-    <div class = "row">
-        <div class = "col-md-3" id = "purchased_items">
+    <div class = "row" id = "menu_container">
+    
+        <div class = "col-md-3">
+          <h4>Who are you with?</h4>
+          <h3>Friends</h3>
+          <div>
+            <% var x = 0; %>
+            <% while(x < friends.length){ %>
+            <h3>@<%= friends[x][0].username %></h3>
+            <h4><%= friends[x][0].first_name %> <%= friends[x][0].last_name %></h4>
+            <p><%= friends[x][0].email %></p>
+            <img src = "<%= friends[x][0].avatar_url %>">
+            <% x++ %>
+            <% } %>
+          </div>
+        </div>
+
+        <div class = "col-md-3" id = "purchased_container">
             <h4>Purchased Items</h4>
             <h3>List</h3>
+            <div id = "purchased_items"></div>
+              <input id = "added_item" placeholder = "Item">
+              <input id = "price_item" placeholder = "Price">
+              <input id = "quantity_item" placeholder = "Quantity">
+              <button id = "submit_item"></button>
+            <div>
+              <p id = "warning"></p>
+            </div>
+            <h3 id = "total_amount">$0</h3>
+            <button id = "calc_button">Calculate</button>
         </div>
+
         <div class = "col-md-3" id = "menu">
             <h4>Menu Items</h4>
         </div>
