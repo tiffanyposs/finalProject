@@ -399,6 +399,25 @@
 
             })//end on click event for submit_items
 
+        //this is the finalized menu hash that will include
+        //will populate something like this;
+        //     var menuPeople = {"menus" : {
+        // "Pasta" : {
+        //     price: "12",
+        //     quantity: "2",
+        //     usernames: ["tiffany", "karl"]
+        //     },
+        // "Salad" : {
+        //     price: "23",
+        //     quantity: "3",
+        //     usernames: ["dawn", "karl"]
+        // },
+
+        // }
+        // }
+        var MasterMenu ={
+            "menus": {}
+        }
 
         //calculate
         var calc_button = document.getElementById('calc_button')
@@ -415,12 +434,17 @@
             var prices = []
             var quantity = []
 
+
             for ( value in Prices ) {
                 names.push(value);
                 prices.push(Prices[value][0]);
                 quantity.push(Prices[value][1]);
+
+                MasterMenu.menus[value] = { price: Prices[value][0], quantity: Prices[value][1], usernames: []};
+                // console.log(MasterMenu.menus.value) 
             }
 
+            // counter inside of the for each loop
             var x = 0;
             names.forEach(function(each){
 
@@ -442,27 +466,45 @@
                 for( key in ChosenFriends){
                     name_array.push(key)
                     avatar_url_array.push(ChosenFriends[key].avatar_url)
-                    console.log(name_array);
-                    console.log(avatar_url_array)
+                    // console.log(name_array);
+                    // console.log(avatar_url_array)
                 }
 
-                avatar_url_array.forEach(function(each){
+                avatar_url_array.forEach(function(each_img){
                     var image = document.createElement('img');
-                    image.src = each;
+                    image.src = each_img;
                     final_card.appendChild(image)
                     var has_eaten = false
 
                     image.addEventListener('click', function(){
+                        var index = avatar_url_array.indexOf(each_img)
+                        var added_name = name_array[index];
                         if(has_eaten === false){
                             image.style.border = "2px solid red";
                             has_eaten = true;
+
+
+                            //this pushes the usernames selected to the appropriate
+                            //menus item user array
+                            MasterMenu.menus[each].usernames.push(added_name)
+                            // console.log(MasterMenu.menus[each].usernames)
+                            // MasterMenu.menus[each].usernames.push(name_array[index])
+                            console.log("added " + MasterMenu.menus[each])
                         }
                         else{
-                            image.style.border = "2px solid purple";
+                            for(var i = 0; i < MasterMenu.menus[each].usernames.length; i++){
+                                // console.log(MasterMenu.menus[each].usernames[i])
+                                // console.log(added_name);
+                                if(MasterMenu.menus[each].usernames[i] === added_name){
+                                    MasterMenu.menus[each].usernames.splice(i, 1);
+                                }
+                            }
+                            // console.log(MasterMenu.menus[each].usernames)
+                            image.style.border = "none";
                             has_eaten = false;
+                            console.log("subtracted " + MasterMenu.menus[each])
                         }
                     })
-
 
 
                     })
@@ -502,8 +544,5 @@
 
 
         })// end calculate button event listener
-
-
-
 
 
