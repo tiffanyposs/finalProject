@@ -2,7 +2,10 @@
 <head>
 <style>
   img{
-    height: 200px;
+    height: 100px;
+  }
+  #friends{
+    display: none;
   }
 </style>
     <meta charset="UTF-8">
@@ -17,21 +20,23 @@
 
 <!-- Where all the menu items get appended -->
 <!-- created in menu.js -->
+
 <section class = "container-fluid">
     <div class = "row" id = "menu_container">
-    
-        <div class = "col-md-3">
-          <h4>Who are you with?</h4>
-          <h3>Friends</h3>
-          <div>
-            <% var x = 0; %>
-            <% while(x < friends.length){ %>
-            <h3>@<%= friends[x][0].username %></h3>
-            <h4><%= friends[x][0].first_name %> <%= friends[x][0].last_name %></h4>
-            <p><%= friends[x][0].email %></p>
-            <img src = "<%= friends[x][0].avatar_url %>">
-            <% x++ %>
-            <% } %>
+
+
+<!--         friend list -->
+        <div class = "col-md-3" id = "friend_container">
+          <div id = "friend_list">
+            <h4>Who are you with?</h4>
+            <h3>Friends</h3>
+          </div>
+        </div>
+
+        <div id = "chosen_friends" class = "col-md-3">
+          <div id = "friends_input">
+            <input placeholder = "Add Friends Here" id = "add_friends"></input>
+            <button id = "add_friend_button">Add</button>
           </div>
         </div>
 
@@ -53,6 +58,7 @@
         <div class = "col-md-3" id = "menu">
             <h4>Menu Items</h4>
         </div>
+
     </div>
 </section>
 

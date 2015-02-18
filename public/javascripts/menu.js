@@ -1,6 +1,133 @@
-        var url = "/api_info";
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", url);
+        //THIS POPULATES THE FRIENDS
+        //friends api call sent from server
+        //this populates the friends on the page
+        var ChosenFriends = {}
+
+        var friends_url = "/api_friends"
+        var friends_xhr = new XMLHttpRequest();
+        friends_xhr.open("GET", friends_url)
+
+        var friend_list = document.getElementById('friend_list');
+        //gets added friends list from menu.ejs
+        var new_friend_div = document.getElementById('chosen_friends');
+
+        friends_xhr.addEventListener('load', function(e){
+            var d = friends_xhr.responseText;
+            var friends = JSON.parse(d);
+
+
+
+            //populates the friend from the server
+            friends.forEach(function(each){
+                var friend_div = document.createElement('div');
+                friend_list.appendChild(friend_div);
+
+                var username = document.createElement('h3');
+                username.innerText = each[0].username;
+                friend_div.appendChild(username);
+
+                var image = document.createElement('img');
+                image.src = each[0].avatar_url;
+                friend_div.appendChild(image);
+                //checked marks if the person has checked our not
+
+            //when you click on a friend
+             friend_div.addEventListener('click', function(){
+                        //this is the card div
+                        var chosen_friend = document.createElement('div')
+                        new_friend_div.appendChild(chosen_friend);
+
+                        var chosen_username = document.createElement('h3');
+                        chosen_username.innerText = each[0].username;
+                        chosen_friend.appendChild(chosen_username);
+
+                        var chosen_image = document.createElement('img');
+                        chosen_image.src = each[0].avatar_url;
+                        chosen_friend.appendChild(chosen_image);
+                        friend_list.removeChild(friend_div);
+
+                        //this adds it to the ChosenFriends object
+                        ChosenFriends[each[0].username] = {avatar_url: each[0].avatar_url}
+                        console.log(ChosenFriends)
+
+                        //when the added friend is clicked it is now removed
+                        chosen_image.addEventListener('click', function(){
+                            var friend_div = document.createElement('div');
+                            friend_list.appendChild(friend_div);
+
+                            var username = document.createElement('h3');
+                            username.innerText = each[0].username;
+                            friend_div.appendChild(username);
+
+                            var image = document.createElement('img');
+                            image.src = each[0].avatar_url;
+                            friend_div.appendChild(image);
+                            //removes it from the chosen list
+                            new_friend_div.removeChild(chosen_friend);
+                            //deltes it form the ChosenFriends object
+                            delete ChosenFriends[each[0].username]
+                            console.log(ChosenFriends)
+                        })
+
+                    
+
+                })
+
+
+            })
+            
+        selfBox()
+
+        })
+
+        friends_xhr.send();
+        //end friends api call
+
+
+        // this is for adding additional friends
+        var selfBox = function(){
+            //input and button from ejs file
+            var name_input = document.getElementById('add_friends')
+            var name_button = document.getElementById('add_friend_button')
+
+            name_button.addEventListener('click', function(){
+                if(name_input.value != ""){
+
+                    var friend_div = document.createElement('div');
+                    new_friend_div.appendChild(friend_div);
+
+                    var initials = document.createElement('h3');
+                    var name = name_input.value;
+                    initials.innerText = name;
+                    friend_div.appendChild(initials);
+
+                    var image = document.createElement('img');
+                    //could make this an array of dummy images
+                    image_source = "http://www.ilikewallpaper.net/ipad-wallpapers/download/2268/Square-Pattern-ipad-wallpaper-ilikewallpaper_com.jpg";
+                    image.src = image_source;
+                    friend_div.appendChild(image);
+
+                    name_input.value = "";
+
+                    //adds friends to the ChosenFriends object
+                    ChosenFriends[name] = {avatar_url: image_source};
+                    console.log(ChosenFriends);
+                }
+                //removes the element from the screen
+                image.addEventListener('click', function(){
+                    new_friend_div.removeChild(friend_div);
+
+                    //deletes friends from ChosenFriends object
+                    delete ChosenFriends[name];
+                    console.log(ChosenFriends)
+                })
+
+            })
+
+        };
+        //END FRIENDS SECTION
+        //!!!!!!!!!!!!!!!!!!!!
+
 
         //this adds up all the Prices, global
         var Prices = {};
@@ -16,13 +143,23 @@
 
 
 
+        
 
-        xhr.onreadystatechange = function() {
+        //below
+        var url = "/api_info";
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url);
+
+        xhr.addEventListener('load', function(e){
+
             var d = xhr.responseText;
             var parsed = JSON.parse(d);
 
             // this is the object from the api
             console.log(parsed);
+
+            // console.log(parsed.venues[0].menus[0].sections[0].subsections[0].contents[1].name);
+            // console.log(parsed.venues[0].menus[0].sections[0].subsections[0].contents[1].price);
             var digging = parsed.venues[0].menus[0].sections;
             //div or menu items on main page
             var menu_section = document.getElementById('menu');
@@ -151,15 +288,11 @@
                 })
             })
 
-        };
+        });//end xhr for
 
-            //this is the closest to all of the submenus, must nest the following layers
-            // console.log(parsed.venues[0].menus[0].sections);
-            //this is diggin in the rest of the way
-            // console.log(parsed.venues[0].menus[0].sections[0].subsections[0].contents[1].name);
-            // console.log(parsed.venues[0].menus[0].sections[0].subsections[0].contents[1].price);
+            xhr.send();
 
-        xhr.send();
+
 
 
             //this adds the total to the page and removes the keys from prices
@@ -264,7 +397,7 @@
                     warning_msg.style.color = 'red';
                 }
 
-            })
+            })//end on click event for submit_items
 
 
         //calculate
@@ -278,24 +411,67 @@
             total_div.className = "col-md-3";
             menu_container.appendChild(total_div);
 
+            var names = []
+            var prices = []
+            var quantity = []
 
             for ( value in Prices ) {
+                names.push(value);
+                prices.push(Prices[value][0]);
+                quantity.push(Prices[value][1]);
+            }
+
+            var x = 0;
+            names.forEach(function(each){
+
                 var final_card = document. createElement('div');
                 final_card.style.backgroundColor = "cyan"
                 total_div.appendChild(final_card);
-                var name = value;
-                var price = Prices[value][0];
-                var quantity = Prices[value][1];
+
                 
                 var title = document.createElement('h4');
-                title.innerText = name;
+                title.innerText = each;
                 final_card.appendChild(title);
                 var amount = document.createElement('p');
-                amount.innerText = "$" + price + " x " + quantity;
+                amount.innerText = "$" + prices[x] + " x " + quantity[x];
                 final_card.appendChild(amount)
 
-                console.log( Prices[value] ); // Outputs: foo, fiz or fiz, foo
+                var name_array = []
+                var avatar_url_array = []
+
+                for( key in ChosenFriends){
+                    name_array.push(key)
+                    avatar_url_array.push(ChosenFriends[key].avatar_url)
+                    console.log(name_array);
+                    console.log(avatar_url_array)
                 }
+
+                avatar_url_array.forEach(function(each){
+                    var image = document.createElement('img');
+                    image.src = each;
+                    final_card.appendChild(image)
+                    var has_eaten = false
+
+                    image.addEventListener('click', function(){
+                        if(has_eaten === false){
+                            image.style.border = "2px solid red";
+                            has_eaten = true;
+                        }
+                        else{
+                            image.style.border = "2px solid purple";
+                            has_eaten = false;
+                        }
+                    })
+
+
+
+                    })
+                x++;
+             })   
+                
+
+            // console.log(menu_container.childNodes);
+
             var total_price = document.createElement('h3');
             total_price.innerText = "Total: $" + Total.toFixed(2);
             total_div.appendChild(total_price)
@@ -319,9 +495,15 @@
             grandtotal_amount.innerText = "Grand Total: $" + grandtotal.toFixed(2);
             total_div.appendChild(grandtotal_amount);
 
+                        //removes friends
+            var friend_container = document.getElementById('friend_container');
+            friend_container.removeChild(friend_list)
+            // menu_container.removeChild(friend_container);
 
 
-        })
+        })// end calculate button event listener
+
+
 
 
 
