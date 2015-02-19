@@ -31,7 +31,7 @@
             var d = friends_xhr.responseText;
             var friends = JSON.parse(d);
 
-
+ 
 
             //populates the friend from the server
             friends.forEach(function(each){
@@ -39,7 +39,7 @@
                 friend_list.appendChild(friend_div);
 
                 var username = document.createElement('h3');
-                username.innerText = each[0].username;
+                username.innerText = "@" + each[0].username;
                 friend_div.appendChild(username);
 
                 var image = document.createElement('img');
@@ -186,9 +186,12 @@
                 //This is for  the section name, will save these somewhere
                 // console.log(each_one.section_name)
                 // console.log(each_one.subsections)
+                var section_name = document.createElement('div');
+                section_name.className = 'section_name'
+                menu_section.appendChild(section_name);
                 var h3 = document.createElement('h3');
                 h3.innerText = each_one.section_name;
-                menu_section.appendChild(h3);
+                section_name.appendChild(h3);
 
                 each_one.subsections.forEach(function(each_two){
 
@@ -205,12 +208,9 @@
                         if(typeof each_three.name != "undefined" && typeof each_three.price != "undefined"){
                                 var div = document.createElement('div');
                                 div.className = 'menu_card';
-                                div.style.backgroundColor = 'cyan';
                                 menu_section.appendChild(div);
                                 var name = document.createElement('h5');
-                                name.className = 'name'
                                 var price = document.createElement('p');
-                                price.className = 'price'
                                 name.innerText = each_three.name;
                                 price.innerText = "$" + each_three.price;
                                 div.appendChild(name);
@@ -226,7 +226,7 @@
                                 
                                 div.addEventListener('click', function(){
                                     if(counter === 0){
-                                    this.style.backgroundColor = 'red';
+                                    this.style.backgroundColor = '#53B8A5';
                                     // console.log(this.textContent)
                                     
                                     var item_quantity = 1;
@@ -271,7 +271,6 @@
 
 
                                     purchase_card.appendChild(add_button);
-                                    purchase_card.style.backgroundColor = 'green';
                                     //Prices object outside of this big function
                                     //this puts a key:value pair for each one
                                     Prices[each_three.name] = [each_three.price, 1];
@@ -457,7 +456,7 @@
 
         //calculate
         var calc_button = document.getElementById('calc_button')
-        var menu = document.getElementById('menu');
+        var menu = document.getElementById('menu_area');
         calc_button.addEventListener('click', function(){
             //removes menu section
             menu_container.removeChild(purchased_container)

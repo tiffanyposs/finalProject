@@ -14,11 +14,14 @@ var db = new sqlite3.Database("database.db");
 
 
 
-db.run("INSERT INTO friends (friend_one, friend_two) VALUES (?, ?), (?, ?), (?, ?)",
-	1, 2, 1, 3, 2, 3,
+db.run("INSERT INTO friends (friend_one, friend_two) VALUES (?, ?), (?, ?)",
+	1, 4, 1, 5,
 	function(err){
 		if(err){
 			throw err;
 		}
 	}
 )
+
+
+

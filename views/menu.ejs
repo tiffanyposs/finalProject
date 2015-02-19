@@ -26,12 +26,25 @@
     <div class = "row" id = "menu_container">
 
 
+    <section>
+      <div class = 'col-md-12' id = "header">
+        <h1>Crunchr</h1>
+      </div>
+    </section>
+
+<!--     <section>
+      <div class = 'col-md-12' id = "header">
+        <h1>Crunchr</h1>
+      </div>
+    </section> -->
+
+
 <!--         friend list -->
         <div class = "col-md-3" id = "friend_container">
-          <div id = "friend_list">
             <h4>Who are you with?</h4>
-            <h3>Friends</h3>
-          </div>
+          <div id = "friend_list" class = "scrollbar">
+<!--           friends are populated in here
+ -->          </div>
         </div>
 
         <div id = "chosen_friends" class = "col-md-3">
@@ -43,23 +56,32 @@
 
         <div class = "col-md-3" id = "purchased_container">
             <h4>Purchased Items</h4>
-            <h3>List</h3>
             <div id = "purchased_items"></div>
-              <input id = "added_item" placeholder = "Item">
-              <input id = "price_item" placeholder = "Price">
-              <input id = "quantity_item" placeholder = "Quantity">
-              <button id = "submit_item"></button>
-            <div>
+
+
+            <div class="form-group">
+              <input id = "added_item" placeholder = "Item" class="form-control">
+              <input id = "price_item" placeholder = "Price" class="form-control">
+              <input id = "quantity_item" placeholder = "Quantity" class="form-control">
+              <button id = "submit_item">Add Item</button>
               <p id = "warning"></p>
             </div>
+
+
             <h3 id = "total_amount">$0</h3>
+            <h4>When you have selected your friends and items, click next.</h4>
             <button id = "calc_button">Calculate</button>
         </div>
 
-        <div class = "col-md-3" id = "menu">
-            <h4>Menu Items</h4>
-        </div>
 
+        <div class = "col-md-3 text-center" id = "menu_area">
+            <h4>Menu Items</h4>
+        <div id = "menu" class = "menu_scrollbar">
+<!--             class = menu_card
+            class = name
+            class = price -->
+        </div>
+        </div>
     </div>
 </section>
 

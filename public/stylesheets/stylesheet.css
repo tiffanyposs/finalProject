@@ -1,3 +1,146 @@
+/*colors
+#362939 black
+#876E6E grey
+#53B8A5 teal
+#C2DED4 light green
+#D3CFD0 light grey*/
+
 body{
-	background-color: red;
+	color: #362939;
+}
+
+#header{
+	background-color: #362939;
+	height: 80px;
+	color: white;
+	margin-bottom: 15px;
+}
+
+
+
+
+
+/*Main page*/
+
+.scrollbar {
+    overflow: auto;
+    width: 250px;
+    height: 600px;
+    padding: 0 0 35px 40px;	
+/*    border-radius: 20px;
+*/    border: 5px solid #53B8A5;
+    border-left: 5px solid #C2DED4;
+    border-top: 5px solid #C2DED4;
+}
+
+.scrollbar  img{
+    height: 150px;
+  }
+
+#user_info img{
+	height: 300px;
+	border-radius: 20px;
+	border: 5px solid #53B8A5;
+	border-left: 5px solid #C2DED4;
+    border-top: 5px solid #C2DED4;
+}
+
+#user_info h3{
+	color: #53B8A5;
+}
+
+input{
+	text-align: center;
+}
+
+
+
+/*loginpage*/
+
+.input_header{
+	background-color: #53B8A5;
+	height: 70px;
+	padding-top: 4px;
+}
+
+.input_header h3{
+	color: white;
+	margin-left: 25px;
+}
+
+
+.box_outline{
+	border: 1px solid #D3CFD0;
+	padding: 20px;
+}
+
+.box_outline label{
+	color: #876E6E;
+}
+
+
+
+.login_button{
+	background-color: #C2DED4;
+	color: #876E6E;
+	margin-top: 15px;
+}
+
+
+/*!!!!!!!!!!!!!*/
+/*MENU PAGE*/
+/*!!!!!!!!!!*/
+
+
+/*friends*/
+#friend_list{
+	margin-left: 30px;
+}
+
+
+/*menu*/
+.menu_scrollbar{
+    overflow: auto;
+    width: 100%;
+    height: 600px;
+/*    border-radius: 20px;*/
+    border: 5px solid #53B8A5;
+    border-left: 5px solid #C2DED4;
+    border-top: 5px solid #C2DED4;	
+}
+
+.section_name{
+	background-color: #362939;
+	height: 100px;
+
+}
+
+.section_name h3{
+	color: white;
+	font-size: 2.5em;
+	padding-top: 25px;
+}
+
+.menu_card{
+	background-color: #C2DED4;
+	padding: 3px;
+	border-bottom: 4px solid #53B8A5;
+/*	margin-bottom: 5px;
+	margin-top: 5px;*/
+}
+
+.menu_card h5{
+}
+.menu_card h6{
+}
+
+.menu_card p{
+
+}
+
+
+/*chosen items*/
+
+.purchase_card{
+	background-color: #53B8A5;
 }

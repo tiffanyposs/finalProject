@@ -35,7 +35,12 @@ app.get('/', function(req, res) {
   console.log('/')
   if(req.session.valid_user === true){
     var friends = session_info.friends;
-  	res.render('index.ejs', {friends: friends}); //add any items to send over via ejs
+   
+  db.get('SELECT username, first_name, last_name, email, avatar_url FROM users WHERE username = ?', session_info.username, function(err, row){  
+    var users = row;
+    res.render('index.ejs', {friends: friends, users: users}); //add any items to send over via ejs
+    })
+
   }
   else{
     res.redirect('/login')

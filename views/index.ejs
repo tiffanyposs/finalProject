@@ -1,9 +1,7 @@
 <html lang="en">
 <head>
 <style>
-  img{
-    height: 200px;
-  }
+
 </style>
     <meta charset="UTF-8">
     <title></title>
@@ -11,6 +9,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css">
 
 </head>
 <body>
@@ -18,26 +17,59 @@
 <!-- Where all the menu items get appended -->
 <!-- created in menu.js -->
 <section class = "container-fluid">
-    <div class = "row">
-        <div class = "col-md-3">
-            <h4>Hello</h4>
 
+    <section class = row>
+      <div class = 'col-md-12' id = "header">
+        <h1>Crunchr</h1>
+      </div>
+    </section>
+
+
+    <div class = "row">
+        <div class = "col-md-3 col-md-offset-1">
+            <h3>Friends</h3>
             <!-- This populates the friend list -->
             <!-- need to put it into a loop to make cards -->
-            <% var x = 0; %>
-            <% while(x < friends.length){ %>
-            <h3>@<%= friends[x][0].username %></h3>
-            <h4><%= friends[x][0].first_name %> <%= friends[x][0].last_name %></h4>
-            <p><%= friends[x][0].email %></p>
-            <img src = "<%= friends[x][0].avatar_url %>">
-            <% x++ %>
-            <% } %>
-
+            <div class = "scrollbar">
+              <% var x = 0; %>
+              <% while(x < friends.length){ %>
+<!--               <div class = "friend_card">
+ -->              <h3>@<%= friends[x][0].username %></h3>
+              <h4><%= friends[x][0].first_name %> <%= friends[x][0].last_name %></h4>
+              <img src = "<%= friends[x][0].avatar_url %>">
+              <% x++ %>
+<!--               </div>
+ -->              <% } %>
+            </div>
 
         </div>
-        <div class = "col-md-3" id = "menu">
-            <h4>World</h4>
+
+        <div class = "col-md-4 text-center" id = "user_info">
+          <div>
+          <h3>Hello, <%= users.first_name %>!</h3>
+          <h4>@<%= users.username %></h4>
+          <img src = "<%= users.avatar_url %>">
+          </div>
+          <div>
+          <h3>Lets Start a New Receipt</h3>
+          <form>
+            <div class = "form-group">
+              <input placeholder = "Where did you just eat?" class="form-control">
+            </div>
+            <a href = "/menu"><button class="btn btn-default, login_button">New Receipt</button></a>
+          </form>
+
+          </div>
         </div>
+
+        <div class = "col-md-3 col-md-offset-1">
+          <h3>Receipts</h3>  
+          <div class = "text-center scrollbar">
+                
+          </div>
+        </div>
+
+
     </div>
 </section>
 
