@@ -1,3 +1,19 @@
+        var MainUser = {}
+
+        var user_url = "/api_user_info"
+        var user_xhr = new XMLHttpRequest();
+        user_xhr.open("GET", user_url)
+
+        user_xhr.addEventListener('load', function(e){
+            var d = user_xhr.responseText;
+            var user_info = JSON.parse(d);
+            MainUser = user_info;
+            console.log(MainUser)
+        })
+
+        user_xhr.send();
+
+
         //THIS POPULATES THE FRIENDS
         //friends api call sent from server
         //this populates the friends on the page
@@ -419,6 +435,26 @@
             "menus": {}
         }
 
+
+
+
+// var MasterUser = {
+//     "tiffany" : {
+//         "avatar_url" : "http://localhost"
+//         "items" : {
+//             "salad" : {price: 4.21, quantity: 1},
+//             "beer" : {price: 5.32, quantity: 2}
+//         },
+//         "total" : 15.23,
+//         "tip" : 3,
+//         "tax" : 1.5,
+//         "grand-total": 19.76
+//     }
+// }
+
+        //example format above
+        var MasterUser = {}
+
         //calculate
         var calc_button = document.getElementById('calc_button')
         var menu = document.getElementById('menu');
@@ -476,33 +512,27 @@
                     final_card.appendChild(image)
                     var has_eaten = false
 
+                    //this event listener adds and subtracts each
+                    //friend from the MasterMenu object so you know who got what.
                     image.addEventListener('click', function(){
                         var index = avatar_url_array.indexOf(each_img)
                         var added_name = name_array[index];
                         if(has_eaten === false){
                             image.style.border = "2px solid red";
                             has_eaten = true;
-
-
-                            //this pushes the usernames selected to the appropriate
-                            //menus item user array
-                            MasterMenu.menus[each].usernames.push(added_name)
-                            // console.log(MasterMenu.menus[each].usernames)
-                            // MasterMenu.menus[each].usernames.push(name_array[index])
-                            console.log("added " + MasterMenu.menus[each])
+                            var to_push = [added_name, each_img]
+                            MasterMenu.menus[each].usernames.push(to_push)
+                            console.log("added " + MasterMenu.menus[each].usernames)
                         }
                         else{
                             for(var i = 0; i < MasterMenu.menus[each].usernames.length; i++){
-                                // console.log(MasterMenu.menus[each].usernames[i])
-                                // console.log(added_name);
-                                if(MasterMenu.menus[each].usernames[i] === added_name){
+                                if(MasterMenu.menus[each].usernames[i][0] === added_name){
                                     MasterMenu.menus[each].usernames.splice(i, 1);
                                 }
                             }
-                            // console.log(MasterMenu.menus[each].usernames)
                             image.style.border = "none";
                             has_eaten = false;
-                            console.log("subtracted " + MasterMenu.menus[each])
+                            console.log("subtracted " + MasterMenu.menus[each].usernames)
                         }
                     })
 
@@ -513,6 +543,7 @@
                 
 
             // console.log(menu_container.childNodes);
+
 
             var total_price = document.createElement('h3');
             total_price.innerText = "Total: $" + Total.toFixed(2);
@@ -525,8 +556,8 @@
             tax_amount.innerText = "Tax: $" + tax.toFixed(2);
             total_div.appendChild(tax_amount);
 
-            //default to 20% for now
-            var tip = (Total + tax) * 0.20;
+            //default to 15% for now
+            var tip = (Total + tax) * 0.15;
             var tip_amount = document.createElement('h4')
             tip_amount.innerText = "Tip: $" + tip.toFixed(2);
             total_div.appendChild(tip_amount);
@@ -537,12 +568,103 @@
             grandtotal_amount.innerText = "Grand Total: $" + grandtotal.toFixed(2);
             total_div.appendChild(grandtotal_amount);
 
+
                         //removes friends
             var friend_container = document.getElementById('friend_container');
             friend_container.removeChild(friend_list)
             // menu_container.removeChild(friend_container);
 
 
+
+            //this is the finalized button that will calculate the amounts owned
+            var final_button = document.createElement('button');
+            final_button.innerText = "Finished";
+            final_button.id = "final_button"
+            total_div.appendChild(final_button);
+
+
+            //event listener that calculates each
+            final_button.addEventListener('click', function(){
+                // console.log(MasterMenu);
+                var menu_item_array = []
+                for ( key in MasterMenu.menus ) {
+                    menu_item_array.push(key)
+                }
+
+                menu_item_array.forEach(function(menu_item){
+                    // console.log(menu_item);
+                    // console.log(MasterMenu.menus[menu_item]);
+                    var final_price = MasterMenu.menus[menu_item].price;
+                    var final_quantity = MasterMenu.menus[menu_item].quantity;
+                    var item_total = final_price * final_quantity;
+                    // console.log(item_total);
+
+                    var diners = MasterMenu.menus[menu_item].usernames;
+                    // console.log(diners)
+
+                    var owed_each = item_total / diners.length;
+                    // console.log(owed_each);
+
+                    var quantity_each = final_quantity / diners.length
+
+                    diners.forEach(function(diner){
+                            // console.log(menu_item)
+                            if(!MasterUser[diner[0]]){
+
+                            MasterUser[diner[0]] = {};
+                            MasterUser[diner[0]].avatar_url = diner[1];
+                            MasterUser[diner[0]].items = {};
+                            MasterUser[diner[0]].items[menu_item] = {total_owed: owed_each, quantity_eaten: quantity_each}
+                            }
+                            else{
+                            MasterUser[diner[0]].items[menu_item] = {total_owed: owed_each, quantity_eaten: quantity_each}
+                            }
+
+                    })
+
+                })
+
+
+                //this part is for making the total in the MasterUserhash
+                var users = []
+                for( key in MasterUser){
+                    users.push(key)
+                }
+                users.forEach(function(user){
+                    // console.log(MasterUser[user].items)
+                    var total_tally = 0;
+                    for( item in MasterUser[user].items){
+                        // console.log(item)
+                       // console.log(MasterUser[user].items[item])
+                        total_tally += MasterUser[user].items[item].total_owed;
+                        
+                    }
+                    MasterUser[user]["total"] = total_tally;
+                    MasterUser[user]["tax"] = MasterUser[user]["total"] * 0.08875;
+                    MasterUser[user]["tip"] = (MasterUser[user]["total"] + MasterUser[user]["tax"]) * 0.15;
+                    MasterUser[user]["grand-total"] = MasterUser[user]["total"] +  MasterUser[user]["tax"] + MasterUser[user]["tip"];
+                })
+                // console.log(users)
+                // console.log(key)
+                console.log(MasterUser)
+            })
+
+
         })// end calculate button event listener
 
 
+
+
+// var MasterUser = {
+//     "tiffany" : {
+//         "avatar_url" : "http://localhost"
+//         "items" : {
+//             "salad" : {price: 4.21, quantity: 1},
+//             "beer" : {price: 5.32, quantity: 2}
+//         },
+//         "total" : 15.23,
+//         "tip" : 3,
+//         "tax" : 1.5,
+//         "grand-total": 19.76
+//     }
+// }

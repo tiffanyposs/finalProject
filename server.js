@@ -130,6 +130,18 @@ app.get('/menu', function(req, res){
   }
 })
 
+
+
+app.get('/api_user_info', function(req, res){
+  res.header('Access-Control-Allow-Origin', '*');
+  db.get('SELECT username, first_name, last_name, email, avatar_url FROM users WHERE username = ?', session_info.username, function(err, row){
+    var user_info = row;
+    res.send(user_info)
+  })
+
+})
+
+
 //this sends the friends to the ajax which populates the page
 app.get('/api_friends', function(req, res){
   console.log('/api_friends')
