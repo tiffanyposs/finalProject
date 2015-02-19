@@ -14,6 +14,7 @@
 
 body{
 	color: #362939;
+	font-family: 'Oxygen', sans-serif;
 }
 
 #header{
@@ -198,9 +199,29 @@ input{
 
 .purchase_card{
 	background-color: #53B8A5;
+	padding: 10px;
+	border-bottom: 4px solid #C2DED4;
 }
 
+.add_button{
+	background-color: #C2DED4;
+	color: #876E6E;
+	width: 30px;
+	padding: 5px;
+}
 
+.sub_button{
+	background-color: #C2DED4;
+	color: #876E6E;
+	width: 30px;
+	padding: 5px;
+}
+
+.remove_button{
+	background-color: #C2DED4;
+	color: #876E6E;
+	padding: 5px;
+}
 
 /*divide up page*/
 #total_header{

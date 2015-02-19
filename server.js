@@ -207,15 +207,9 @@ var findFriends = function(username, friends){
 
         friend_info.push(row)
       if(friend_info.length === friend_array.length){
-        // console.log("enter if statement")
-        // console.log(friend_info);
-        // console.log(friend_info)
         friend_info.forEach(function(each){
-          // console.log(each + "each")
           session_info.friends.push(each);
-          // console.log(each)
         })
-        // return friend_info
       }
     })//end db.all
 
@@ -236,7 +230,6 @@ var content = ""
 app.get('/api_info', function(req, res){
   console.log('/api_info')
   res.header('Access-Control-Allow-Origin', '*');
-  console.log(content);
   res.send(content);
 })
 

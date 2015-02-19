@@ -70,16 +70,6 @@
                         //when the added friend is clicked it is now removed
                         //issue with the 
                         chosen_image.addEventListener('click', function(){
-                            // var friend_div = document.createElement('div');
-                            // friend_list.appendChild(friend_div);
-
-                            // var username = document.createElement('h3');
-                            // username.innerText = "@" + each[0].username;
-                            // friend_div.appendChild(username);
-
-                            // var image = document.createElement('img');
-                            // image.src = each[0].avatar_url;
-                            // friend_div.appendChild(image);
                             friend_div.style.display = "inline"
                             //removes it from the chosen list
                             new_friend_div.removeChild(chosen_friend);
@@ -366,7 +356,7 @@
                     var selected_price = document.createElement('p');
                     selected_price.innerText = "$" + item_object.price + " x " + item_object.quantity;
                     purchase_card.appendChild(selected_price)
-                    purchase_card.style.backgroundColor = 'green';
+                    purchase_card.style.backgroundColor = '#53B8A5';
                     console.log(Prices);
                     Prices[item_object.name] = [item_object.price, parseInt(item_object.quantity)];
                     added_item.value = "";
