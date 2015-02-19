@@ -172,8 +172,6 @@ input{
 	background-color: #C2DED4;
 	padding: 3px;
 	border-bottom: 4px solid #53B8A5;
-/*	margin-bottom: 5px;
-	margin-top: 5px;*/
 }
 
 .menu_card h5{
@@ -221,9 +219,40 @@ input{
 	background-color: #C2DED4;
 	padding: 20px;
 	border-bottom: 3px solid #53B8A5;
-
+/*	border-right: 3px solid #53B8A5;
+*/
 }
 
 .final_card img{
 	height: 60px;
 }
+
+
+
+/*the last page*/
+
+#final_page{
+	display: none;
+	background-color: white;
+	overflow: visible;
+
+	padding: 0;
+
+}
+
+.user_card{
+	background-color: #C2DED4;
+	padding: 10px;
+	border: 2px solid #53B8A5;
+	margin-bottom: 30px;
+}
+
+.user_card img{
+	height: 150px;
+}
+
+
+
+
+/*footer*/
+

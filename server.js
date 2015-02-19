@@ -53,6 +53,7 @@ app.get('/', function(req, res) {
 app.get('/login', function(req, res){
     console.log("/login")
     res.render('login.ejs');
+
 });
 
 
@@ -125,9 +126,6 @@ app.get('/loading', function(req, res){
 app.get('/menu', function(req, res){
   console.log('/menu')
   if(req.session.valid_user === true){
-    // var friends = session_info.friends;
-    // console.log(session_info.friends);
-    // console.log(content)
     res.render('menu.ejs')
   }
   else{
@@ -230,7 +228,7 @@ var findFriends = function(username, friends){
 //!!!!!!!!!!!
 
 
-
+var content = ""
 
 //!!!!!!!!!!
 //!!!!!!!!!!
@@ -238,8 +236,16 @@ var findFriends = function(username, friends){
 app.get('/api_info', function(req, res){
   console.log('/api_info')
   res.header('Access-Control-Allow-Origin', '*');
+  console.log(content);
   res.send(content);
 })
+
+
+
+//this searches the api
+app.post('/menu', function(req, res){
+
+var restaurant = req.body.restaurant;
 
 //begin
 var menuData = {
@@ -256,26 +262,29 @@ var menuData = {
   ],
   "venue_queries" : [
     {
-      "name": "buvette",
+      "name": "",
       "menus" : { "$present" : true }
     }
   ]
 }
+
+menuData["venue_queries"][0]['name'] = restaurant;
 // buttermilk channel
 // union square cafe
 // fedora
 // the dutch
 //narcissa
 // bistro central parc
-// http://www.timeout.com/newyork/restaurants/100-best-new-york-restaurants-american?package_page=35907
 
-var content = ""
 
 var menuRequest = request.post('https://api.locu.com/v2/venue/search', {form: JSON.stringify(menuData)}, function(err, httpResponse, body) {
-    content = body;
+    content = body
+    res.redirect('/menu')
+
 });
-//!!!!!!!!!!
-//!!!!!!!!!!
+
+
+})
 
 app.listen(3000)
 

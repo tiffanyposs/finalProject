@@ -54,12 +54,16 @@
           </div>
           <div>
           <h3>Lets Start a New Receipt</h3>
-         <!--  <form> -->
-            <div class = "form-group">
+
+<!--             <div class = "form-group">
               <input placeholder = "Where did you just eat?" class="form-control">
             </div>
             <a href = "/menu"><button class="btn btn-default, login_button">New Receipt</button></a>
-          <!-- </form> -->
+             -->
+            <form action="menu" method="POST" class = "form-group">
+                <input name = "restaurant" placeholder = "Where did you just eat?" class="form-control">
+                <button class="btn btn-default, login_button">New Receipt</button>
+            </form>
 
           </div>
         </div>

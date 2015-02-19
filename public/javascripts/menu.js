@@ -455,7 +455,11 @@
 // }
 
         //example format above
-        var MasterUser = {}
+        //this contains all the data for that user
+        var MasterUser = {};
+        //this contains the data for the totals
+        var MasterTotal = {}
+
 
         //calculate
         var calc_button = document.getElementById('calc_button')
@@ -466,6 +470,7 @@
             menu_container.removeChild(menu);
             var total_div = document.createElement('div');
             total_div.className = "col-md-4 col-md-offset-4";
+            total_div.id = "final_count"
 
 
             var total_header = document.createElement('h2');
@@ -558,25 +563,28 @@
             var total_price = document.createElement('h3');
             total_price.innerText = "Total: $" + Total.toFixed(2);
             total_div.appendChild(total_price)
-
+            MasterTotal.total = total_price;
 
             //default tax amount nyc
             var tax = Total * 0.08875;
             var tax_amount = document.createElement('h4')
             tax_amount.innerText = "Tax: $" + tax.toFixed(2);
             total_div.appendChild(tax_amount);
+            MasterTotal.total_tax = tax;
 
             //default to 15% for now
             var tip = (Total + tax) * 0.15;
             var tip_amount = document.createElement('h4')
             tip_amount.innerText = "Tip: $" + tip.toFixed(2);
             total_div.appendChild(tip_amount);
+            MasterTotal.total_tip = tip;
 
 
             var grandtotal = Total + tax + tip;
             var grandtotal_amount = document.createElement('h4')
             grandtotal_amount.innerText = "Grand Total: $" + grandtotal.toFixed(2);
             total_div.appendChild(grandtotal_amount);
+            MasterTotal.the_grandtotal = grandtotal;
 
 
                         //removes friends
@@ -660,6 +668,8 @@
                 // console.log(users)
                 // console.log(key)
                 console.log(MasterUser)
+                console.log(MasterTotal)
+                finalCalculation();
             })
 
 
@@ -681,3 +691,63 @@
 //         "grand-total": 19.76
 //     }
 // }
+
+
+//this function will load everthing for the final tally
+//(also need to send this to the server)
+var finalCalculation = function(){
+
+    var final_count = document.getElementById('final_count');
+    menu_container.removeChild(final_count);
+
+    var final_page = document.getElementById('final_page');
+    final_page.style.display = "inline";
+
+    for( key in MasterUser){
+        console.log(MasterUser[key]);
+
+        var user_card = document.createElement('div');
+        user_card.className = "user_card";
+        final_page.appendChild(user_card);
+
+        var user_img = document.createElement('img');
+        user_img.src = MasterUser[key]['avatar_url'];
+        user_card.appendChild(user_img);
+
+        for( item in MasterUser[key]['items'] ){
+            console.log(item)
+            var item_name = document.createElement('h6');
+            item_name.innerText = MasterUser[key]['items'][item].quantity_eaten + " x " + item;
+            user_card.appendChild(item_name)
+
+            var item_price = document.createElement('h5');
+            item_price.innerText = "$" + MasterUser[key]['items'][item].total_owed.toFixed(2);
+            user_card.appendChild(item_price)
+
+            console.log(MasterUser[key]['items'][item])
+
+        }
+
+        var total = document.createElement('h5');
+        total.innerText = "Total: $" + MasterUser[key]["total"].toFixed(2);
+        user_card.appendChild(total);
+
+        var tax = document.createElement('h5');
+        tax.innerText = "Tax: $" + MasterUser[key]["tax"].toFixed(2);
+        user_card.appendChild(tax);
+
+        var tip = document.createElement('h5');
+        tip.innerText = "Tip: $" + MasterUser[key]["tip"].toFixed(2);
+        user_card.appendChild(tip);
+
+        var grand_total = document.createElement('h4');
+        grand_total.innerText = "Grand Total: $" + MasterUser[key]["grand-total"].toFixed(2);
+        user_card.appendChild(grand_total);
+
+
+    }
+
+
+}
+
+
