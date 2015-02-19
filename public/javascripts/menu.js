@@ -54,30 +54,33 @@
                         new_friend_div.appendChild(chosen_friend);
 
                         var chosen_username = document.createElement('h3');
-                        chosen_username.innerText = each[0].username;
+                        chosen_username.innerText = "@" + each[0].username;
                         chosen_friend.appendChild(chosen_username);
 
                         var chosen_image = document.createElement('img');
                         chosen_image.src = each[0].avatar_url;
                         chosen_friend.appendChild(chosen_image);
-                        friend_list.removeChild(friend_div);
+                        // friend_list.removeChild(friend_div);
+                        friend_div.style.display = "none"
 
                         //this adds it to the ChosenFriends object
                         ChosenFriends[each[0].username] = {avatar_url: each[0].avatar_url}
                         console.log(ChosenFriends)
 
                         //when the added friend is clicked it is now removed
+                        //issue with the 
                         chosen_image.addEventListener('click', function(){
-                            var friend_div = document.createElement('div');
-                            friend_list.appendChild(friend_div);
+                            // var friend_div = document.createElement('div');
+                            // friend_list.appendChild(friend_div);
 
-                            var username = document.createElement('h3');
-                            username.innerText = each[0].username;
-                            friend_div.appendChild(username);
+                            // var username = document.createElement('h3');
+                            // username.innerText = "@" + each[0].username;
+                            // friend_div.appendChild(username);
 
-                            var image = document.createElement('img');
-                            image.src = each[0].avatar_url;
-                            friend_div.appendChild(image);
+                            // var image = document.createElement('img');
+                            // image.src = each[0].avatar_url;
+                            // friend_div.appendChild(image);
+                            friend_div.style.display = "inline"
                             //removes it from the chosen list
                             new_friend_div.removeChild(chosen_friend);
                             //deltes it form the ChosenFriends object
@@ -462,7 +465,14 @@
             menu_container.removeChild(purchased_container)
             menu_container.removeChild(menu);
             var total_div = document.createElement('div');
-            total_div.className = "col-md-3";
+            total_div.className = "col-md-4 col-md-offset-4";
+
+
+            var total_header = document.createElement('h2');
+            total_header.id = 'total_header';
+            total_header.innerText = "Who had what?";
+            total_div.appendChild(total_header);
+
             menu_container.appendChild(total_div);
 
             var names = []
@@ -484,7 +494,8 @@
             names.forEach(function(each){
 
                 var final_card = document. createElement('div');
-                final_card.style.backgroundColor = "cyan"
+                final_card.className = "final_card"
+                // final_card.style.backgroundColor = "cyan";
                 total_div.appendChild(final_card);
 
                 
@@ -517,7 +528,7 @@
                         var index = avatar_url_array.indexOf(each_img)
                         var added_name = name_array[index];
                         if(has_eaten === false){
-                            image.style.border = "2px solid red";
+                            image.style.border = "2px solid #53B8A5";
                             has_eaten = true;
                             var to_push = [added_name, each_img]
                             MasterMenu.menus[each].usernames.push(to_push)
@@ -569,9 +580,12 @@
 
 
                         //removes friends
-            var friend_container = document.getElementById('friend_container');
-            friend_container.removeChild(friend_list)
+            var choosen_friends = document.getElementById('friends_chosen_container');
+            menu_container.removeChild(choosen_friends)
             // menu_container.removeChild(friend_container);
+
+            var friend_container = document.getElementById('friend_container');
+            menu_container.removeChild(friend_container)
 
 
 

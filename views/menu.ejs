@@ -1,12 +1,8 @@
 <html lang="en">
 <head>
 <style>
-  img{
-    height: 100px;
-  }
-  #friends{
-    display: none;
-  }
+
+
 </style>
     <meta charset="UTF-8">
     <title></title>
@@ -32,48 +28,9 @@
       </div>
     </section>
 
-<!--     <section>
-      <div class = 'col-md-12' id = "header">
-        <h1>Crunchr</h1>
-      </div>
-    </section> -->
 
 
-<!--         friend list -->
-        <div class = "col-md-3" id = "friend_container">
-            <h4>Who are you with?</h4>
-          <div id = "friend_list" class = "scrollbar">
-<!--           friends are populated in here
- -->          </div>
-        </div>
-
-        <div id = "chosen_friends" class = "col-md-3">
-          <div id = "friends_input">
-            <input placeholder = "Add Friends Here" id = "add_friends"></input>
-            <button id = "add_friend_button">Add</button>
-          </div>
-        </div>
-
-        <div class = "col-md-3" id = "purchased_container">
-            <h4>Purchased Items</h4>
-            <div id = "purchased_items"></div>
-
-
-            <div class="form-group">
-              <input id = "added_item" placeholder = "Item" class="form-control">
-              <input id = "price_item" placeholder = "Price" class="form-control">
-              <input id = "quantity_item" placeholder = "Quantity" class="form-control">
-              <button id = "submit_item">Add Item</button>
-              <p id = "warning"></p>
-            </div>
-
-
-            <h3 id = "total_amount">$0</h3>
-            <h4>When you have selected your friends and items, click next.</h4>
-            <button id = "calc_button">Calculate</button>
-        </div>
-
-
+    <!--         menu items -->
         <div class = "col-md-3 text-center" id = "menu_area">
             <h4>Menu Items</h4>
         <div id = "menu" class = "menu_scrollbar">
@@ -82,6 +39,56 @@
             class = price -->
         </div>
         </div>
+
+
+<!--         purchased list -->
+        <div class = "col-md-3 text-center" id = "purchased_container">
+            <h4>Purchased Items</h4>
+
+
+            <div id = "purchased_items" class = "purchased_scrollbar"></div>
+            <h3 id = "total_amount">$0</h3>
+
+            <div class="form-group">
+              <input id = "added_item" placeholder = "Item" class="form-control">
+              <input id = "price_item" placeholder = "Price" class="form-control">
+              <input id = "quantity_item" placeholder = "Quantity" class="form-control">
+              <button id = "submit_item" class = "login_button">Add Item</button>
+              <p id = "warning"></p>
+        </div>
+
+        </div>
+
+
+
+
+<!--         chosen friend list -->
+        <div class = "col-md-3 text-center" id = "friends_chosen_container">
+        <h4>Chosen Friends</h4>
+        <div id = "chosen_friends" class = "chosen_friends_scrollbar">
+<!--         populates the friends chosen
+ -->        </div>
+            <div id = "friends_input">
+              <input placeholder = "Add Friends Here" id = "add_friends"></input>
+              <button id = "add_friend_button" class = "login_button">Add</button>
+          </div>
+          <div id = "calc_container">
+            <h4>When you have selected your friends and items, click next.</h4>
+            <button id = "calc_button" class = "login_button">Calculate</button>
+          </div>
+        </div>
+
+
+
+<!--         friend list -->
+        <div class = "col-md-3 text-center" id = "friend_container">
+            <h4>Who are you with?</h4>
+          <div id = "friend_list" class = "menu_scrollbar">
+<!--           friends are populated in here
+ -->          </div>
+        </div>
+
+
     </div>
 </section>
 
