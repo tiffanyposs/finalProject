@@ -56,6 +56,12 @@ app.get('/login', function(req, res){
 
 });
 
+app.post('/logout', function(req,res){
+  req.session.valid_user = false;
+  session_info.username = "";
+  session_info.friends = [];
+  res.redirect('/');
+})
 
 //new user
 //need to add it so multipe users can't sign up

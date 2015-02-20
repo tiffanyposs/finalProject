@@ -1,22 +1,22 @@
 <% include partials/template/header.ejs %>
 
-
-
-
-
     <div class = "row">
         <div class = "col-md-4 text-center">
 
             <h3>Friends</h3>
             <!-- This populates the friend list -->
             <!-- need to put it into a loop to make cards -->
-            <div class = "scrollbar col-md-offset-3">
+            <div class = "scrollbar" id ="friends_container">
               <% var x = 0; %>
               <% while(x < friends.length){ %>
-<!--               <div class = "friend_card">
- -->              <h3>@<%= friends[x][0].username %></h3>
-              <h4><%= friends[x][0].first_name %> <%= friends[x][0].last_name %></h4>
+<!--               <div class = "friend_card">--> 
+            <div class = "friend_card">
+              <div class = "friend_header">
+                  <h3>@<%= friends[x][0].username %></h3>
+                  
+              </div>
               <img src = "<%= friends[x][0].avatar_url %>">
+            </div>
               <% x++ %>
 <!--               </div>
  -->              <% } %>
@@ -32,6 +32,7 @@
           <img src = "<%= users.avatar_url %>">
           </div>
           <div>
+
           <h3>Lets Start a New Receipt</h3>
 
 <!--             <div class = "form-group">
@@ -51,8 +52,49 @@
 
         <div class = "col-md-4 text-center">
           <h3>Receipts</h3>  
-          <div class = "col-md-offset-3 text-center scrollbar">
-                
+          <div class = "col-md-offset-3 text-center scrollbar" id = "receipt_box">
+                <div class = "receipt_card">
+                  <div class = "receipt_header">
+                    <h3>Nobu</h3>
+                  </div>
+                  <p>January 23, 2015</p>
+                  <p>$23.43</p>
+                </div>
+
+
+                <div class = "receipt_card">
+                  <div class = "receipt_header">
+                    <h3>Union Square Cafe</h3>
+                  </div>
+                  <p>December 22, 2015</p>
+                  <p>$33.23</p>
+                </div>
+
+
+
+                <div class = "receipt_card">
+                  <div class = "receipt_header">
+                    <h3>Fedora</h3>
+                  </div>
+                  <p>November 29, 2015</p>
+                  <p>$43.63</p>
+                </div>
+
+                <div class = "receipt_card">
+                  <div class = "receipt_header">
+                    <h3>Narcissa</h3>
+                  </div>
+                  <p>November 2, 2015</p>
+                  <p>$36.73</p>
+                </div>
+
+                <div class = "receipt_card">
+                  <div class = "receipt_header">
+                    <h3>The Dutch</h3>
+                  </div>
+                  <p>October 14, 2015</p>
+                  <p>$57.43</p>
+                </div>
           </div>
         </div>
 

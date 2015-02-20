@@ -183,12 +183,14 @@
                 section_name.className = 'section_name'
                 menu_section.appendChild(section_name);
                 var h3 = document.createElement('h3');
+                if(each_one.section_name != ""){
                 h3.innerText = each_one.section_name;
                 section_name.appendChild(h3);
-
+                }
                 each_one.subsections.forEach(function(each_two){
 
                     if(each_two.subsection_name != ""){
+                        console.lo
                         var h4 = document.createElement('h4');
                         h4.innerText = each_two.subsection_name;
                         menu_section.appendChild(h4);
@@ -282,7 +284,7 @@
                                         purchase_card.appendChild(remove_button)
                                         remove_button.addEventListener('click', function(){
                                             items.removeChild(purchase_card);
-                                            div.style.backgroundColor = 'cyan';
+                                            div.style.backgroundColor = '#C2DED4';
                                             deleteTotal(each_three);
                                             // console.log(Prices);
                                             counter = 0
@@ -707,7 +709,7 @@ var finalCalculation = function(){
         for( item in MasterUser[key]['items'] ){
             console.log(item)
             var item_name = document.createElement('h6');
-            item_name.innerText = MasterUser[key]['items'][item].quantity_eaten + " x " + item;
+            item_name.innerText = MasterUser[key]['items'][item].quantity_eaten.toFixed(2) + " x " + item;
             user_card.appendChild(item_name)
 
             var item_price = document.createElement('h5');
