@@ -153,7 +153,7 @@
 
 
         
-
+ 
         //below
         var url = "/api_info";
         var xhr = new XMLHttpRequest();
@@ -167,59 +167,82 @@
             // this is the object from the api
             console.log(parsed);
 
-            // console.log(parsed.venues[0].menus[0].sections[0].subsections[0].contents[1].name);
-            // console.log(parsed.venues[0].menus[0].sections[0].subsections[0].contents[1].price);
-            var digging = parsed.venues[0].menus[0].sections;
             //div or menu items on main page
             var menu_section = document.getElementById('menu');
         
-            // console.log(digging)
-            //this digs through all of the api and logs everything
-            digging.forEach(function(each_one){
-                //This is for  the section name, will save these somewhere
-                // console.log(each_one.section_name)
-                // console.log(each_one.subsections)
-                var section_name = document.createElement('div');
-                section_name.className = 'section_name'
-                menu_section.appendChild(section_name);
-                var h3 = document.createElement('h3');
-                if(each_one.section_name != ""){
-                h3.innerText = each_one.section_name;
-                section_name.appendChild(h3);
-                }
-                each_one.subsections.forEach(function(each_two){
+            var Data = parsed['venues'][0];
 
-                    if(each_two.subsection_name != ""){
-                        console.lo
-                        var h4 = document.createElement('h4');
-                        h4.innerText = each_two.subsection_name;
-                        menu_section.appendChild(h4);
-                    }
-                    // console.log(each_two)
-                    // console.log(each_two.contents)
+            var name = Data['name'];
+            // console.log(name)
+            var website = Data['website_url']
+            // console.log(website)
 
-                    each_two.contents.forEach(function(each_three){
-                        
-                        if(typeof each_three.name != "undefined" && typeof each_three.price != "undefined"){
-                                var div = document.createElement('div');
-                                div.className = 'menu_card';
-                                menu_section.appendChild(div);
-                                var name = document.createElement('h5');
-                                var price = document.createElement('p');
-                                name.innerText = each_three.name;
-                                price.innerText = "$" + each_three.price;
-                                div.appendChild(name);
-                                div.appendChild(price);
-                                if(each_three.description){
-                                    var description = document.createElement('p');
-                                    description.innerText = each_three.description;
-                                    div.appendChild(description)
+
+            Data['menus'].forEach(function(menu){
+                currency = menu['currency_symbol']
+                //main menu name
+
+                var menu_div = document.createElement('div')
+                menu_div.className = "section_name";
+                menu_section.appendChild(menu_div);
+
+                var menu_name = menu['menu_name']
+                var menu_header = document.createElement('h3');
+                menu_header.innerText = menu_name;
+                menu_div.appendChild(menu_header);
+
+
+                     menu['sections'].forEach(function(section){
+                        console.log(section);
+                        if(section['section_name'] != ""){
+                            var section_div = document.createElement('div')
+                            section_div.className = 'menu_section_div';
+                            menu_section.appendChild(section_div)
+
+                            var section_header = document.createElement('h4');
+                            section_header.innerText = section['section_name'];
+                            section_div.appendChild(section_header);
+                        }
+                        section['subsections'].forEach(function(subsection){
+                                // console.log(subsection)
+                                if(subsection['subsection_name'] != ""){
+                                    var subsection_div = document.createElement('div');
+                                    subsection_div.className = 'subsection_div';
+                                    menu_section.appendChild(subsection_div);
+
+                                    var subsection_head = document.createElement('h4');
+                                    subsection_head.innerText = subsection['subsection_name'];
+                                    subsection_div.appendChild(subsection_head);
                                 }//end if statement
-                                //this will allow you to click on the elements from the menu
-                                // to add to the list
+
+
+                        //CONTENT FOR items
+                        subsection['contents'].forEach(function(content){
+                            // console.log(content)
+
+                            if(content['name'] && content['price']){
+
+                                var item_div = document.createElement('div');
+                                item_div.className = 'menu_card';
+                                menu_section.appendChild(item_div);
+
+                                var name = document.createElement('h4');
+                                name.innerText = content['name'];
+                                item_div.appendChild(name)
+
+                                var price = document.createElement('h5');
+                                price.innerText = currency + content['price'];
+                                item_div.appendChild(price)
+
+                                if(content['description']){
+                                var description = document.createElement('p');
+                                description.innerText = content['description'];
+                                item_div.appendChild(description)
+                                }
+
                                 var counter = 0;
-                                
-                                div.addEventListener('click', function(){
+                                ///EVENT LISTENER
+                                item_div.addEventListener('click', function(){
                                     if(counter === 0){
                                     this.style.backgroundColor = '#53B8A5';
                                     // console.log(this.textContent)
@@ -231,11 +254,11 @@
                                     
                                     
                                     var selected_name = document.createElement('h5');
-                                    selected_name.innerText = each_three.name;
+                                    selected_name.innerText = content['name'];
                                     purchase_card.appendChild(selected_name);
                                     var selected_price = document.createElement('p');
                                     
-                                    selected_price.innerText = "$" + each_three.price + " x " + item_quantity;
+                                    selected_price.innerText = "$" + content['price'].split(" ")[0] + " x " + item_quantity;
                                     purchase_card.appendChild(selected_price)
                                     
 
@@ -251,15 +274,15 @@
 
                                         add_button.addEventListener('click', function(){
                                             item_quantity += 1;
-                                            selected_price.innerText = "$" + each_three.price + " x " + item_quantity;
-                                            Prices[each_three.name][1] = item_quantity;
+                                            selected_price.innerText = "$" + content['price'] + " x " + item_quantity;
+                                            Prices[content['name']][1] = item_quantity;
                                             addTotal();
                                         })
                                         sub_button.addEventListener('click', function(){
                                             if(item_quantity > 1){
                                             item_quantity -= 1;
-                                            selected_price.innerText = "$" + each_three.price + " x " + item_quantity;
-                                            Prices[each_three.name][1] = item_quantity;
+                                            selected_price.innerText = "$" + content['price'] + " x " + item_quantity;
+                                            Prices[content['name']][1] = item_quantity;
                                             addTotal();
                                             }
                                         })
@@ -268,7 +291,7 @@
                                     purchase_card.appendChild(add_button);
                                     //Prices object outside of this big function
                                     //this puts a key:value pair for each one
-                                    Prices[each_three.name] = [each_three.price, 1];
+                                    Prices[content['name']] = [content['price'].split(" ")[0], 1];
                                     //this loops through the prices and adds the total
 
                                     addTotal();
@@ -284,19 +307,158 @@
                                         purchase_card.appendChild(remove_button)
                                         remove_button.addEventListener('click', function(){
                                             items.removeChild(purchase_card);
-                                            div.style.backgroundColor = '#C2DED4';
-                                            deleteTotal(each_three);
+                                            item_div.style.backgroundColor = '#C2DED4';
+                                            deleteTotal(content);
                                             // console.log(Prices);
-                                            counter = 0
+                                            counter = 0;
                                         })//end event listener purchase_card
 
                                     }
 
                                 })//end event listener for div
-                            }//end type of if statement
-                    })
-                })
+                                ///END EVENT LISTENER
+
+
+                            }
+                            //some menus have option group
+                            //seems to be mostly for wines by bottle or by glass
+                            if(content['option_groups']){
+                                content['option_groups'].forEach(function(option){
+                                    // console.log(option)
+                                    option['options'].forEach(function(each){
+                                    // console.log(each)
+                                    if(each['price'] && each['price'] != 'n/a'){
+                                    var option_div = document.createElement('div');
+                                    option_div.className = 'menu_card';
+                                    menu_section.appendChild(option_div);
+
+                                    var name = document.createElement('h4');
+                                    name.innerText = content['name'];
+                                    option_div.appendChild(name);
+
+                                    var size = document.createElement('h5');
+                                    size.innerText = each['name'];
+                                    option_div.appendChild(size);
+
+                                    var price = document.createElement('h5');
+                                    price.innerText = currency + each['price'].split(' ')[0];
+                                    option_div.appendChild(price);
+
+                                    if(content['description']){
+                                        var description = document.createElement('p');
+                                        description.innerText = content['description'];
+                                        option_div.appendChild(description)
+                                    }
+                                    var option_counter = 0;
+
+                                option_div.addEventListener('click', function(){
+                                    if(option_counter === 0){
+                                    this.style.backgroundColor = '#53B8A5';
+                                    // console.log(this.textContent)
+                                    
+                                    var item_quantity = 1;
+                                    var purchase_card = document.createElement('div');
+                                    purchase_card.className = 'purchase_card'
+                                    items.appendChild(purchase_card);
+                                    
+                                    
+                                    var selected_name = document.createElement('h5');
+                                    selected_name.innerText = content['name'] + " " + each['name'];
+                                    purchase_card.appendChild(selected_name);
+
+                                    var selected_price = document.createElement('p');
+                                    selected_price.innerText = "$" + each['price'].split(' ')[0] + " x " + item_quantity;
+                                    purchase_card.appendChild(selected_price)
+                                    
+
+                                    //buttons
+                                    var add_button = document.createElement('button');
+                                    add_button.className = "add_button";
+                                    add_button.innerText = "+";
+                                    purchase_card.appendChild(add_button);
+                                    var sub_button = document.createElement('button');
+                                    sub_button.className = "sub_button";
+                                    sub_button.innerText = "-";
+                                    purchase_card.appendChild(sub_button);
+                                    purchase_card.appendChild(add_button);
+
+                                        add_button.addEventListener('click', function(){
+                                            item_quantity += 1;
+                                            selected_price.innerText = "$" + each['price'] + " x " + item_quantity;
+                                            Prices[content['name'] + " " + each['name']][1] = item_quantity;
+                                            addTotal();
+                                        })
+                                        sub_button.addEventListener('click', function(){
+                                            if(item_quantity > 1){
+                                            item_quantity -= 1;
+                                            selected_price.innerText = "$" + each['price'] + " x " + item_quantity;
+                                            Prices[content['name'] + " " + each['name']][1] = item_quantity;
+                                            addTotal();
+                                            }
+                                        })
+
+                                    console.log( "403 " + each['price'] )
+                             
+                                    //this loops through the prices and adds the total
+
+                                    addTotal();
+
+                                    //Prices object outside of this big function
+                                    //this puts a key:value pair for each one
+                                    Prices[content['name'] + " " + each['name']] = [each['price'].split(' ')[0], 1];
+                                    //this loops through the prices and adds the total
+
+                                    addTotal();
+                                    console.log(Total + "initial add")
+                                    option_counter++;
+
+                                        //remove button
+                                        //this will remove the purchased_card if hey click on it
+                                        //and reactivate the original color on menu
+                                        var delete_button = document.createElement('button');
+                                        delete_button.className = "remove_button";
+                                        delete_button.innerText = 'Delete';
+                                        purchase_card.appendChild(delete_button)
+                                        delete_button.addEventListener('click', function(){
+                                            items.removeChild(purchase_card);
+                                            option_div.style.backgroundColor = '#C2DED4';
+
+                                            //this subtracts from the total
+                                            //this deletes that element from the Prices Object
+                                            console.log("before delete " + Total)
+                                            Total -= (each['price'] * Prices[content['name'] + " " + each['name']][1]);
+                                            console.log("after delete" + Total)
+                                            //sets the total on the ejs file
+                                            total_amount.innerText = "$" + Total;
+                                            delete Prices[content['name'] + " " + each['name']]
+                                            
+
+                                            option_counter = 0;
+                                        })//end event listener purchase_card
+
+                                    }
+
+                                })//end event listener for div
+                                ///END EVENT LISTENER
+
+
+                                    }   
+
+                                    })
+                                    // console.log(option)
+                                })
+
+                            }//end option_groups
+            
+                    })//end contents
+
+
+
+                        })//end subsections
+
+                    })//end sections
             })
+
 
         });//end xhr for
 
@@ -320,15 +482,17 @@
             }
 
             //this deletes the object and redoes the total (need to feed it the thing to be removed)
-            var deleteTotal = function(each_three){
-                //this subtracts from the total
+            var deleteTotal = function(content){
+
+                //this subtracts from the total       
                 //this deletes that element from the Prices Object
-                Total -= (each_three.price * Prices[each_three.name][1]);
+                Total -= (content['price'].split(" ")[0] * Prices[content['name']][1]);
                 //sets the total on the ejs file
                 total_amount.innerText = "$" + Total;
-                delete Prices[each_three.name]
+                delete Prices[content['name']]
                 console.log(Total)
             }
+
 
 
             //input boxes adding menu items manually
