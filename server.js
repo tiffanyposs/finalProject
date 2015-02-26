@@ -27,7 +27,8 @@ app.use(session({
 //these are set upon login
 var session_info = {
   username : "",
-  friends : []
+  friends : [],
+  id : 0
 }
 
 // homepage
@@ -35,7 +36,6 @@ app.get('/', function(req, res) {
   console.log('/')
   if(req.session.valid_user === true){
     var friends = session_info.friends;
-   
   db.get('SELECT username, first_name, last_name, email, avatar_url FROM users WHERE username = ?', session_info.username, function(err, row){  
     var users = row;
     res.render('index.ejs', {friends: friends, users: users}); //add any items to send over via ejs
@@ -46,6 +46,63 @@ app.get('/', function(req, res) {
     res.redirect('/login')
   }
 });
+
+//this allows people to load friends
+app.post('/friendfinder', function(req, res){
+  console.log('/find_friends')
+  var friend = req.body.friend;
+
+  db.get('SELECT id, username, first_name, last_name, email, avatar_url FROM users WHERE username = ?', friend, function(err, row){
+    
+    if(row){
+      console.log(row)
+      var exists = false;
+      session_info.friends.forEach(function(friend){
+        // console.log(friend[0].username);
+        if(friend[0].username === row.username){
+          exists = true;
+        }
+      })
+
+      if(exists === true){
+        console.log("you're already friends with that person")
+      }
+      else{
+        console.log("success!");
+        // var index = session_info.friends.length;
+        // session_info.friends[index] = [row];
+        // console.log(session_info.friends)
+        var index = session_info.friends.length;
+        session_info.friends.splice(0, 0, [row]);
+        console.log(session_info.friends);
+      db.run('INSERT INTO friends(friend_one, friend_two) VALUES(?, ?)',
+               session_info['id'], row.id, function(err){
+        if(err){ throw err;}
+        else{
+
+          res.redirect('/');
+        }
+      });
+
+
+      }
+        
+
+      }
+      // if(exists === false){
+      //   console.log(row)
+      // }
+      // else{
+      //   console.log("you're already friends with that person")
+      // }
+      // console.log(session_info.friends)
+      
+      // console.log(row)
+      // console.log(session_info.friends.length)
+    })
+    // res.send(user_info)
+  })
+
 
 
 
@@ -87,11 +144,20 @@ app.post('/user', function(req, res){
       res.redirect('/loading');
       }
     });
+    //this sets the id in the session
+      db.get('SELECT * FROM users WHERE username = ?', username, function(err, row){
+        if(err){ throw err }
+        if(row){ 
+          //captures the username for the current session
+          session_info['id'] = row.id;
+          console.log(session_info['id'])
+        }
+      })
   }
   else{
     res.redirect('/login');
   }
-})
+})//end /user post
 
 
 
@@ -108,6 +174,8 @@ app.post('/session', function(req, res){
       req.session.valid_user = true;
       //captures the username for the current session
       session_info.username = username;
+      session_info['id'] = row.id;
+
       res.redirect('/loading') 
     }
     else{ res.redirect('/login') }
@@ -289,3 +357,5 @@ app.listen(3000)
 
 
 // module.exports = 
+
+

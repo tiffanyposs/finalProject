@@ -4,6 +4,10 @@
         <div class = "col-md-4 text-center">
 
             <h3>Friends</h3>
+            <form action="friendfinder" method="POST" class = "form-group">
+              <input name = "friend" placeholder = "Add a Friend" class="form-control">
+              <button class="btn btn-default, login_button">Find</button>
+            </form>
             <!-- This populates the friend list -->
             <!-- need to put it into a loop to make cards -->
             <div class = "scrollbar" id ="friends_container">
