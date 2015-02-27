@@ -8,7 +8,9 @@
 body{
 	color: #362939;
 	font-family: 'Oxygen', sans-serif;
+
 }
+
 
 #header a{
 	color: white;
@@ -57,7 +59,7 @@ body{
 .scrollbar {
     overflow: auto;
     width: 250px;
-    height: 600px;
+    height: 575px;
 	border: 5px solid #53B8A5;
     border-left: 5px solid #C2DED4;
     border-top: 5px solid #C2DED4;
@@ -67,6 +69,11 @@ body{
 .scrollbar  img{
     height: 150px;
   }
+
+ .group_header{
+ 	margin-top: 0;
+ 	margin-bottom: 20px;
+ }
 
 
 .friend_card{
@@ -103,8 +110,18 @@ body{
 	color: #53B8A5;
 }
 
+#restaurant_form{
+	margin-bottom: 15px;
+}
+
 input{
 	text-align: center;
+}
+
+
+
+#add_friend input{
+	width: 200px;
 }
 
 #receipt_box{
@@ -130,7 +147,7 @@ input{
 }
 
 .receipt_header h3{
-	/*padding: 5px 0 20px 0;*/
+	padding: 0 0 10px 0;
 	color: white;
 }
 
@@ -140,17 +157,18 @@ input{
 	width: 100%;
 }
 
+.receipt_card h4{
+	margin: 15px 0 15px 0;
+}
+
 
 
 .receipt_card:hover{
-	border: 4px solid black;
+	border: 1px solid #53B8A5;
 
 }
 
-.receipt_card p{
-	/*padding: 5px 0 10px 0;*/
 
-}
 
 
 /*loginpage*/
@@ -182,7 +200,6 @@ input{
 .login_button{
 	background-color: #C2DED4;
 	color: #876E6E;
-	margin-top: 15px;
 }
 
 
