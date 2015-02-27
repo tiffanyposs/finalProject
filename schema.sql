@@ -3,6 +3,7 @@
 
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS receipts;
+DROP TABLE IF EXISTS friends;
 
 CREATE TABLE users (
           id INTEGER PRIMARY KEY,
@@ -21,9 +22,7 @@ CREATE TABLE users (
 CREATE TABLE receipts (
           id INTEGER PRIMARY KEY,
           user_id TEXT,
-          restaurant_name TEXT,
-          items_purchased TEXT,
-          friend_ids TEXT,
+          restaurant_object TEXT,
           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
           updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

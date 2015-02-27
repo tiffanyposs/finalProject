@@ -92,7 +92,12 @@
         friends_xhr.send();
         //end friends api call
 
-
+        var url_array = ["http://image-cdn.zap2it.com/images/brick-tamland-anchorman-steve-carell.jpg",
+                        "http://www.heyuguys.com/images/2010/07/Paul-Rudd-Brian-Fantana.jpg",
+                        "http://content8.flixster.com/question/55/01/41/5501410_std.jpg",
+                        "http://www.redfm.ie/wp-content/uploads/2013/05/Anchorman.jpg",
+                        "http://vignette1.wikia.nocookie.net/anchorman/images/e/ec/Veronica-corningstone1.jpg/revision/latest?cb=20120329161624"]
+        var url_index = 0
         // this is for adding additional friends
         var selfBox = function(){
             //input and button from ejs file
@@ -111,8 +116,16 @@
                     friend_div.appendChild(initials);
 
                     var image = document.createElement('img');
-                    //could make this an array of dummy images
-                    image_source = "http://www.ilikewallpaper.net/ipad-wallpapers/download/2268/Square-Pattern-ipad-wallpaper-ilikewallpaper_com.jpg";
+
+                    //this is the array above of images for the 
+                    //dummy images fror non-existing friends.
+                    image_source = url_array[url_index];
+                    if(url_index === url_array.length - 1){
+                        url_index = 0;
+                    }
+                    else{
+                        url_index += 1
+                    }
                     image.src = image_source;
                     friend_div.appendChild(image);
 
@@ -902,6 +915,20 @@ var finalCalculation = function(){
 
 
     }
+    //this submits to the server the card
+    var form = document.createElement("form");
+    input = document.createElement("input");
+
+    form.action = "menu_card";
+    form.method = "post";
+
+    input.name = "masteruser";
+    input.value = JSON.stringify(MasterUser);
+    input.setAttribute("type", "hidden");
+    form.appendChild(input);
+
+    document.body.appendChild(form);
+    form.submit();
 
 
 }

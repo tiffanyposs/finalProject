@@ -47,61 +47,55 @@ app.get('/', function(req, res) {
   }
 });
 
+
+
 //this allows people to load friends
 app.post('/friendfinder', function(req, res){
   console.log('/find_friends')
   var friend = req.body.friend;
 
   db.get('SELECT id, username, first_name, last_name, email, avatar_url FROM users WHERE username = ?', friend, function(err, row){
-    
+    //if the database contains this person
     if(row){
-      console.log(row)
       var exists = false;
       session_info.friends.forEach(function(friend){
-        // console.log(friend[0].username);
         if(friend[0].username === row.username){
           exists = true;
         }
       })
-
+      //if they are already friends with that person
       if(exists === true){
         console.log("you're already friends with that person")
+        res.redirect('/');
       }
+      //if they exist and they are not friends with them yet
       else{
         console.log("success!");
-        // var index = session_info.friends.length;
-        // session_info.friends[index] = [row];
-        // console.log(session_info.friends)
         var index = session_info.friends.length;
         session_info.friends.splice(0, 0, [row]);
-        console.log(session_info.friends);
-      db.run('INSERT INTO friends(friend_one, friend_two) VALUES(?, ?)',
-               session_info['id'], row.id, function(err){
-        if(err){ throw err;}
-        else{
-
-          res.redirect('/');
-        }
-      });
+          db.run('INSERT INTO friends(friend_one, friend_two) VALUES(?, ?)',
+                   session_info['id'], row.id, function(err){
+            if(err){ throw err;}
+            else{
+              res.redirect('/');
+            }
+          });
 
 
-      }
+      }//end else
         
 
+      }//end if row
+
+      //refreshes the page if it doesn't exist, could trigger
+      //an error message in the future. 
+      else{
+        res.redirect('/')
       }
-      // if(exists === false){
-      //   console.log(row)
-      // }
-      // else{
-      //   console.log("you're already friends with that person")
-      // }
-      // console.log(session_info.friends)
-      
-      // console.log(row)
-      // console.log(session_info.friends.length)
-    })
-    // res.send(user_info)
-  })
+
+    })//end db.get
+
+  })//end app.post
 
 
 
@@ -207,6 +201,19 @@ app.get('/menu', function(req, res){
   }
 })
 
+
+//this saves the menu card to the db
+app.post('/menu_card', function(req,res){
+  var menu = req.body.masteruser;
+    db.run('INSERT INTO receipts(user_id, restaurant_object) VALUES(?, ?)',
+             session_info['id'], menu, function(err){
+      if(err){ throw err;}
+      else{
+        console.log(menu)
+      }
+    });
+
+})
 
 
 app.get('/api_user_info', function(req, res){
