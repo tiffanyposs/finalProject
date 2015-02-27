@@ -35,3 +35,8 @@ db.run("INSERT INTO users (username, password, first_name, last_name, email, ava
 		}
 	}
 );
+
+
+// SELECT * FROM receipts ORDER BY id DESC LIMIT 1;
+
+// SELECT * FROM receipts WHERE user_id = 2 ORDER BY id DESC LIMIT 1;

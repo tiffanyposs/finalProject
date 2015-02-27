@@ -150,6 +150,86 @@
         //END FRIENDS SECTION
         //!!!!!!!!!!!!!!!!!!!!
 
+        //this converts military time to nicely formatted time
+        //called from getHours
+        var militaryTime = function(num){
+            var number = num.toString();
+            //removes first zero
+            if(number[0] === "0"){
+                number = number.substring(1)
+            }
+
+            //adds am or pm
+            if(number.length === 4){
+                number += " am"
+                // console.log(number)
+                return number;
+            }
+            else{
+                if(number.substring(0, 2) === "10" || number.substring(0, 2) === "11"){
+                    number += " am"
+                    // console.log(number)
+                    return number;
+                }
+                //this converts it to non-military time
+                else{
+                    var Times = {
+                        "13" : "1",
+                        "14" : "2",
+                        "15" : "3",
+                        "16" : "4",
+                        "17" : "5",
+                        "18" : "6",
+                        "19" : "7",
+                        "20" : "8",
+                        "21" : "9",
+                        "22" : "10",
+                        "23" : "11"
+                    }
+                    if(number.substring(0, 2) != "12"){
+                        var first_half = number.substring(0, 2);
+                        var second_half = number.substring(3);
+                        var new_first = Times[first_half];
+                        number = new_first + ":" + second_half + " pm";
+                        // console.log(number);
+                        return number;
+                    }
+                    else{
+                        number += " pm";
+                        // console.log(number);
+                        return number;
+                    }
+
+
+                }
+            }
+        }//end militaryTime
+
+
+        //this will format hours
+        var getHours = function(restaurant_object){
+            var open_hours = restaurant_object;
+
+            var days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+
+            var formated_days = [];
+            days.forEach(function(day){
+                var first_letter = day[0].toUpperCase();
+                var new_day = first_letter + day.substring(1);
+
+                var open = open_hours[day][0][0];
+                var close = open_hours[day][0][1];
+                //calls a function that formats the times
+                open = militaryTime(open)
+                close = militaryTime(close)
+                var times = new_day + ": " + open + " - " + close;
+                formated_days.push(times)
+            })
+            // console.log(formated_days)
+            return formated_days
+            
+        }//end getHours
+
 
         //this adds up all the Prices, global
         var Prices = {};
@@ -163,7 +243,9 @@
         var menu_container = document.getElementById('menu_container');
         var purchased_container = document.getElementById('purchased_container');
 
-
+        var restaurant_name = "";
+        var restaurant_website = "";
+        var restaurant_hours = [];
 
         
  
@@ -184,11 +266,24 @@
             var menu_section = document.getElementById('menu');
         
             var Data = parsed['venues'][0];
+            console.log(Data)
 
             var name = Data['name'];
+            restaurant_name = name;
             // console.log(name)
-            var website = Data['website_url']
+            if(Data['website_url']){
+                var website = Data['website_url']
+                restaurant_website = website;
+            }
+
+            if(Data['open_hours']){
+                var open_hours = Data['open_hours'];
+                var formatted_hours = getHours(open_hours)
+                restaurant_hours = formatted_hours;
+            }
             // console.log(website)
+
+            // var hours = Data['']
 
 
             Data['menus'].forEach(function(menu){
@@ -625,7 +720,11 @@
 
         //example format above
         //this contains all the data for that user
-        var MasterUser = {};
+        var MasterUser = {
+            restaurant_info: {},
+            diners: {},
+            totals: {}
+        };
         //this contains the data for the totals
         var MasterTotal = {}
 
@@ -799,15 +898,15 @@
 
                     diners.forEach(function(diner){
                             // console.log(menu_item)
-                            if(!MasterUser[diner[0]]){
+                            if(!MasterUser['diners'][diner[0]]){
 
-                            MasterUser[diner[0]] = {};
-                            MasterUser[diner[0]].avatar_url = diner[1];
-                            MasterUser[diner[0]].items = {};
-                            MasterUser[diner[0]].items[menu_item] = {total_owed: owed_each, quantity_eaten: quantity_each}
+                            MasterUser['diners'][diner[0]] = {};
+                            MasterUser['diners'][diner[0]].avatar_url = diner[1];
+                            MasterUser['diners'][diner[0]].items = {};
+                            MasterUser['diners'][diner[0]].items[menu_item] = {total_owed: owed_each, quantity_eaten: quantity_each}
                             }
                             else{
-                            MasterUser[diner[0]].items[menu_item] = {total_owed: owed_each, quantity_eaten: quantity_each}
+                            MasterUser['diners'][diner[0]].items[menu_item] = {total_owed: owed_each, quantity_eaten: quantity_each}
                             }
 
                     })
@@ -817,27 +916,38 @@
 
                 //this part is for making the total in the MasterUserhash
                 var users = []
-                for( key in MasterUser){
+                for( key in MasterUser['diners']){
                     users.push(key)
                 }
                 users.forEach(function(user){
                     // console.log(MasterUser[user].items)
                     var total_tally = 0;
-                    for( item in MasterUser[user].items){
+                    for( item in MasterUser['diners'][user].items){
                         // console.log(item)
                        // console.log(MasterUser[user].items[item])
-                        total_tally += MasterUser[user].items[item].total_owed;
+                        total_tally += MasterUser['diners'][user].items[item].total_owed;
                         
                     }
-                    MasterUser[user]["total"] = total_tally;
-                    MasterUser[user]["tax"] = MasterUser[user]["total"] * 0.08875;
-                    MasterUser[user]["tip"] = (MasterUser[user]["total"] + MasterUser[user]["tax"]) * 0.15;
-                    MasterUser[user]["grand-total"] = MasterUser[user]["total"] +  MasterUser[user]["tax"] + MasterUser[user]["tip"];
+                    MasterUser['diners'][user]["total"] = total_tally;
+                    MasterUser['diners'][user]["tax"] = MasterUser['diners'][user]["total"] * 0.08875;
+                    MasterUser['diners'][user]["tip"] = (MasterUser['diners'][user]["total"] + MasterUser['diners'][user]["tax"]) * 0.15;
+                    MasterUser['diners'][user]["grand-total"] = MasterUser['diners'][user]["total"] +  MasterUser['diners'][user]["tax"] + MasterUser['diners'][user]["tip"];
                 })
                 // console.log(users)
                 // console.log(key)
+                MasterUser['totals']['total'] = Total;
+                MasterUser['totals']['tax'] = tax;
+                MasterUser['totals']['tip'] = tip;
+                MasterUser['totals']['grand_total'] = grandtotal;
+
+                //these are defined globally
+                MasterUser['restaurant_info']['name'] = restaurant_name;
+                MasterUser['restaurant_info']['website'] = restaurant_website;
+                MasterUser['restaurant_info']['hours'] = restaurant_hours;
+
+
                 console.log(MasterUser)
-                console.log(MasterTotal)
+                // console.log(MasterTotal)
                 finalCalculation();
             })
 
@@ -859,6 +969,9 @@
 //         "tax" : 1.5,
 //         "grand-total": 19.76
 //     }
+        // final_grand_tax: 32,
+        // final_grand_tip: 4.3,
+        // final_grand_total: 36.64
 // }
 
 
@@ -866,55 +979,68 @@
 //(also need to send this to the server)
 var finalCalculation = function(){
 
-    var final_count = document.getElementById('final_count');
-    menu_container.removeChild(final_count);
+    // var final_count = document.getElementById('final_count');
+    // menu_container.removeChild(final_count);
 
-    var final_page = document.getElementById('final_page');
-    final_page.style.display = "inline";
+    // var final_page = document.getElementById('final_page');
+    // final_page.style.display = "inline";
 
-    for( key in MasterUser){
-        console.log(MasterUser[key]);
+    // for( key in MasterUser['diners']){
+    //     console.log(MasterUser['diners'][key]);
 
-        var user_card = document.createElement('div');
-        user_card.className = "user_card";
-        final_page.appendChild(user_card);
+    //     var user_card = document.createElement('div');
+    //     user_card.className = "user_card";
+    //     final_page.appendChild(user_card);
 
-        var user_img = document.createElement('img');
-        user_img.src = MasterUser[key]['avatar_url'];
-        user_card.appendChild(user_img);
+    //     var user_img = document.createElement('img');
+    //     user_img.src = MasterUser['diners'][key]['avatar_url'];
+    //     user_card.appendChild(user_img);
 
-        for( item in MasterUser[key]['items'] ){
-            console.log(item)
-            var item_name = document.createElement('h6');
-            item_name.innerText = MasterUser[key]['items'][item].quantity_eaten.toFixed(2) + " x " + item;
-            user_card.appendChild(item_name)
+    //     for( item in MasterUser['diners'][key]['items'] ){
+    //         // console.log(item)
+    //         var item_name = document.createElement('h6');
+    //         item_name.innerText = MasterUser['diners'][key]['items'][item].quantity_eaten.toFixed(2) + " x " + item;
+    //         user_card.appendChild(item_name)
 
-            var item_price = document.createElement('h5');
-            item_price.innerText = "$" + MasterUser[key]['items'][item].total_owed.toFixed(2);
-            user_card.appendChild(item_price)
+    //         var item_price = document.createElement('h5');
+    //         item_price.innerText = "$" + MasterUser['diners'][key]['items'][item].total_owed.toFixed(2);
+    //         user_card.appendChild(item_price)
 
-            console.log(MasterUser[key]['items'][item])
+    //         console.log(MasterUser['diners'][key]['items'][item])
 
-        }
+    //     }
 
-        var total = document.createElement('h5');
-        total.innerText = "Total: $" + MasterUser[key]["total"].toFixed(2);
-        user_card.appendChild(total);
+    //     var total = document.createElement('h5');
+    //     total.innerText = "Total: $" + MasterUser['diners'][key]["total"];
+    //     user_card.appendChild(total);
 
-        var tax = document.createElement('h5');
-        tax.innerText = "Tax: $" + MasterUser[key]["tax"].toFixed(2);
-        user_card.appendChild(tax);
+    //     var tax = document.createElement('h5');
+    //     tax.innerText = "Tax: $" + MasterUser['diners'][key]["tax"];
+    //     user_card.appendChild(tax);
 
-        var tip = document.createElement('h5');
-        tip.innerText = "Tip: $" + MasterUser[key]["tip"].toFixed(2);
-        user_card.appendChild(tip);
+    //     var tip = document.createElement('h5');
+    //     tip.innerText = "Tip: $" + MasterUser['diners'][key]["tip"];
+    //     user_card.appendChild(tip);
 
-        var grand_total = document.createElement('h4');
-        grand_total.innerText = "Grand Total: $" + MasterUser[key]["grand-total"].toFixed(2);
-        user_card.appendChild(grand_total);
+    //     var grand_total = document.createElement('h4');
+    //     grand_total.innerText = "Grand Total: $" + MasterUser['diners'][key]["grand-total"];
+    //     user_card.appendChild(grand_total);
 
 
-    }
+    // }
+
+    // var final_tax = document.createElement('h4');
+    // final_tax.innerText = MasterUser["final_grand_tax"];
+    // final_page.appendChild(final_tax);
+
+    // var final_tip =  document.createElement('h4');
+    // final_tip.innerText = MasterUser["final_grand_tip"];
+    // final_page.appendChild(final_tip);
+
+    // var final_grand_total = document.createElement('h3');
+    // final_grand_total = Master["final_grand_total"];
+    // final_page.appendChild(final_grand_total);
+
     //this submits to the server the card
     var form = document.createElement("form");
     input = document.createElement("input");
@@ -932,5 +1058,4 @@ var finalCalculation = function(){
 
 
 }
-
 

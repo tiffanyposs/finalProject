@@ -38,7 +38,12 @@ app.get('/', function(req, res) {
     var friends = session_info.friends;
   db.get('SELECT username, first_name, last_name, email, avatar_url FROM users WHERE username = ?', session_info.username, function(err, row){  
     var users = row;
-    res.render('index.ejs', {friends: friends, users: users}); //add any items to send over via ejs
+    db.all('SELECT * FROM receipts WHERE user_id = ?', session_info.id, function(err, row){
+      var receipts = row;
+      console.log(receipts)
+      res.render('index.ejs', {friends: friends, users: users, receipts: receipts});
+    })
+     //add any items to send over via ejs
     })
 
   }
@@ -80,13 +85,8 @@ app.post('/friendfinder', function(req, res){
               res.redirect('/');
             }
           });
-
-
       }//end else
-        
-
-      }//end if row
-
+    }//end if row
       //refreshes the page if it doesn't exist, could trigger
       //an error message in the future. 
       else{
@@ -104,7 +104,6 @@ app.post('/friendfinder', function(req, res){
 app.get('/login', function(req, res){
     console.log("/login")
     res.render('login.ejs');
-
 });
 
 app.post('/logout', function(req,res){
@@ -208,12 +207,24 @@ app.post('/menu_card', function(req,res){
     db.run('INSERT INTO receipts(user_id, restaurant_object) VALUES(?, ?)',
              session_info['id'], menu, function(err){
       if(err){ throw err;}
-      else{
-        console.log(menu)
+      else{     
+        db.get('SELECT * FROM receipts WHERE user_id = ? ORDER BY id DESC LIMIT 1', session_info.id, function(err, row){
+          res.redirect('/receipt/' + row.id.toString())
+        })
       }
     });
-
 })
+
+
+app.get('/receipt/:id', function(req, res){
+  var receipt_id = req.params.id;
+  db.get('SELECT * FROM receipts WHERE id = ?', receipt_id, function(err, row){
+    console.log(row);
+    var receipts = row;
+    res.render('receipt.ejs', {receipts: receipts})
+  })
+})
+
 
 
 app.get('/api_user_info', function(req, res){
@@ -279,9 +290,9 @@ var findFriends = function(username, friends){
   })//end first db.all
 
 } //end getFriends
-  //this will loop through all of the friend ids, and return their info.
-  var sendFriends = function(friend_array){
 
+  //this will loop through all of the friend ids, and return their info.
+var sendFriends = function(friend_array){
     var friend_info = [];
     for(var x = 0; x < friend_array.length; x++){
     db.all('SELECT username, first_name, last_name, email, avatar_url FROM users WHERE id = ?', friend_array[x], function(err, row){
@@ -362,7 +373,5 @@ var menuRequest = request.post('https://api.locu.com/v2/venue/search', {form: JS
 
 app.listen(3000)
 
-
-// module.exports = 
 
 

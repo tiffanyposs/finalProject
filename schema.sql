@@ -21,7 +21,7 @@ CREATE TABLE users (
 
 CREATE TABLE receipts (
           id INTEGER PRIMARY KEY,
-          user_id TEXT,
+          user_id INTEGER,
           restaurant_object TEXT,
           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
           updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

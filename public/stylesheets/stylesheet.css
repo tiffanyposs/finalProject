@@ -61,7 +61,7 @@ body{
 	border: 5px solid #53B8A5;
     border-left: 5px solid #C2DED4;
     border-top: 5px solid #C2DED4;
-
+	padding: 0;
 }
 
 .scrollbar  img{
@@ -109,26 +109,46 @@ input{
 
 #receipt_box{
 	background-color: #53B8A5;
+
+}
+
+
+#receipt_box a, #receipt_box a:hover{
+	text-decoration: none;
+	color: #362939;
+}
+
+
+/*override issues with bootstrap horizontal scroll*/
+#receipt_box .row{
+	margin-right: 0;
+	margin-left: 0;
 }
 
 .receipt_header{
-	height: 40px;
 	background-color: #53B8A5;
 }
 
 .receipt_header h3{
-
+	/*padding: 5px 0 20px 0;*/
 	color: white;
 }
 
 .receipt_card{
 	background-color: white;
 	border-bottom: 4px solid #C2DED4;
+	width: 100%;
+}
+
+
+
+.receipt_card:hover{
+	border: 4px solid black;
 
 }
 
 .receipt_card p{
-	padding: 5px 0 10px 0;
+	/*padding: 5px 0 10px 0;*/
 
 }
 
