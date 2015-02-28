@@ -31,7 +31,7 @@ var session_info = {
   id : 0
 }
 
-// homepage
+// homepage after login
 app.get('/', function(req, res) {
   console.log('/')
   if(req.session.valid_user === true){
@@ -95,7 +95,7 @@ app.post('/friendfinder', function(req, res){
 
     })//end db.get
 
-  })//end app.post
+})//end app.post
 
 
 
@@ -106,6 +106,8 @@ app.get('/login', function(req, res){
     res.render('login.ejs');
 });
 
+
+//log out
 app.post('/logout', function(req,res){
   req.session.valid_user = false;
   session_info.username = "";
@@ -113,7 +115,8 @@ app.post('/logout', function(req,res){
   res.redirect('/');
 })
 
-//new user
+
+//new user post
 //need to add it so multipe users can't sign up
 app.post('/user', function(req, res){
   console.log('/user')
@@ -215,13 +218,18 @@ app.post('/menu_card', function(req,res){
     });
 })
 
-
+//this shows a receipt
 app.get('/receipt/:id', function(req, res){
   var receipt_id = req.params.id;
   db.get('SELECT * FROM receipts WHERE id = ?', receipt_id, function(err, row){
     console.log(row);
     var receipts = row;
+    if(row.user_id === session_info.id){
     res.render('receipt.ejs', {receipts: receipts})
+    }
+    else{
+      res.redirect('/')
+    }
   })
 })
 

@@ -947,7 +947,7 @@
 
 
                 console.log(MasterUser)
-                // console.log(MasterTotal)
+                //this calls the form to sumit info.
                 finalCalculation();
             })
 
@@ -974,74 +974,11 @@
         // final_grand_total: 36.64
 // }
 
-
+ 
 //this function will load everthing for the final tally
 //(also need to send this to the server)
 var finalCalculation = function(){
 
-    // var final_count = document.getElementById('final_count');
-    // menu_container.removeChild(final_count);
-
-    // var final_page = document.getElementById('final_page');
-    // final_page.style.display = "inline";
-
-    // for( key in MasterUser['diners']){
-    //     console.log(MasterUser['diners'][key]);
-
-    //     var user_card = document.createElement('div');
-    //     user_card.className = "user_card";
-    //     final_page.appendChild(user_card);
-
-    //     var user_img = document.createElement('img');
-    //     user_img.src = MasterUser['diners'][key]['avatar_url'];
-    //     user_card.appendChild(user_img);
-
-    //     for( item in MasterUser['diners'][key]['items'] ){
-    //         // console.log(item)
-    //         var item_name = document.createElement('h6');
-    //         item_name.innerText = MasterUser['diners'][key]['items'][item].quantity_eaten.toFixed(2) + " x " + item;
-    //         user_card.appendChild(item_name)
-
-    //         var item_price = document.createElement('h5');
-    //         item_price.innerText = "$" + MasterUser['diners'][key]['items'][item].total_owed.toFixed(2);
-    //         user_card.appendChild(item_price)
-
-    //         console.log(MasterUser['diners'][key]['items'][item])
-
-    //     }
-
-    //     var total = document.createElement('h5');
-    //     total.innerText = "Total: $" + MasterUser['diners'][key]["total"];
-    //     user_card.appendChild(total);
-
-    //     var tax = document.createElement('h5');
-    //     tax.innerText = "Tax: $" + MasterUser['diners'][key]["tax"];
-    //     user_card.appendChild(tax);
-
-    //     var tip = document.createElement('h5');
-    //     tip.innerText = "Tip: $" + MasterUser['diners'][key]["tip"];
-    //     user_card.appendChild(tip);
-
-    //     var grand_total = document.createElement('h4');
-    //     grand_total.innerText = "Grand Total: $" + MasterUser['diners'][key]["grand-total"];
-    //     user_card.appendChild(grand_total);
-
-
-    // }
-
-    // var final_tax = document.createElement('h4');
-    // final_tax.innerText = MasterUser["final_grand_tax"];
-    // final_page.appendChild(final_tax);
-
-    // var final_tip =  document.createElement('h4');
-    // final_tip.innerText = MasterUser["final_grand_tip"];
-    // final_page.appendChild(final_tip);
-
-    // var final_grand_total = document.createElement('h3');
-    // final_grand_total = Master["final_grand_total"];
-    // final_page.appendChild(final_grand_total);
-
-    //this submits to the server the card
     var form = document.createElement("form");
     input = document.createElement("input");
 

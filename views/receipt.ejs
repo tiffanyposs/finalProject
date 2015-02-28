@@ -10,11 +10,6 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" href="../stylesheets/stylesheet.css">
-  <style>
-  	.red{
-  		color: red;
-  	}
-  </style>
 </head>
 
 <!-- Where all the menu items get appended -->
@@ -35,10 +30,16 @@
    	</div>
 
     <div class = "row">
-	<div class = "col-md-4 col-md-offset-4">
-	<% var parsed = JSON.parse(receipts.restaurant_object) %>
+    <% var parsed = JSON.parse(receipts.restaurant_object) %>
+	<div class = "col-md-4 col-md-offset-4 text-center">
+	<div class = "rest_header">
+		<h1><%=parsed['restaurant_info']['name']%></h1>
+		<%if(parsed['restaurant_info']['website'] != ""){ %>
+		<a href = <%=parsed['restaurant_info']['website'];%> target = "blank"><h3>Website</h3></a>
+		<%}%>
+	</div>
 	<% for(user in parsed['diners']){ %>
-		<div>
+		<div class = "user_card">
 			<h3>@<%= user %></h3>
 			<img src = "<%= parsed['diners'][user].avatar_url%>">
 				<% for( item in parsed['diners'][user].items){ %>
@@ -51,7 +52,7 @@
 			<h3>Grand Total $<%= parsed['diners'][user]['grand-total'].toFixed(2)%></h3>
 		</div>
 	<% } %>
-		<div class = 'red'>
+		<div class = "total_card">
 			<h4>Total: $<%=parsed['totals'].total.toFixed(2)%></h4>
 			<h4>Total Tax: $<%=parsed['totals'].tax.toFixed(2)%></h4>
 			<h4>Total Tip: $<%=parsed['totals'].tip.toFixed(2)%></h4>

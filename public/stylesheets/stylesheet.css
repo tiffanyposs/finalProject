@@ -11,7 +11,7 @@ body{
 
 }
 
-
+ 
 #header a{
 	color: white;
 	text-decoration: none;
@@ -351,8 +351,6 @@ input{
 	background-color: #C2DED4;
 	padding: 20px;
 	border-bottom: 3px solid #53B8A5;
-/*	border-right: 3px solid #53B8A5;
-*/
 }
 
 .final_card img{
@@ -362,6 +360,19 @@ input{
 
 
 /*the last page*/
+
+.rest_header{
+	background-color: #53B8A5;
+	padding: 20px 30px 20px 30px;
+	border: 2px solid #362939;
+	margin-bottom: 30px;
+	color: white;
+}
+
+.rest_header a{
+	text-decoration: none;
+	color: #C2DED4;
+}
 
 #final_page{
 	display: none;
@@ -373,7 +384,7 @@ input{
 
 .user_card{
 	background-color: #C2DED4;
-	padding: 30px;
+	padding: 20px 30px 20px 30px;
 	border: 2px solid #53B8A5;
 	margin-bottom: 30px;
 }
@@ -382,8 +393,19 @@ input{
 	height: 150px;
 }
 
+.total_card{
+	background-color: #53B8A5;
+	color: white;
+	padding: 30px;
+	border: 2px solid #362939;
+	margin-bottom: 30px;	
+}
 
-
+/*#362939 black
+#876E6E grey
+#53B8A5 teal
+#C2DED4 light green
+#D3CFD0 light grey*/
 
 /*footer*/
 

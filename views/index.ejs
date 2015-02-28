@@ -35,18 +35,22 @@
           <h4>@<%= users.username %></h4>
           <img src = "<%= users.avatar_url %>">
           </div>
+
           <div>
-
-          <h3>Lets Start a New Receipt</h3>
-
+            <h3>Lets Start a New Receipt</h3>
             <form action="menu" method="POST" class = "form-group">
-               
                   <input id = "restaurant_form" name = "restaurant" placeholder = "Where did you just eat?" class="form-control">
-                  <button class="btn btn-default, login_button">New Receipt</button>
-              
+                  <button class="btn btn-default, login_button">New Receipt</button>    
             </form>
-
           </div>
+<!--           <div>
+            <h3>Looking for a Restaurant?</h3>
+            <form action="get_menu" method="POST" class = "form-group">
+              <input name = "restaurant_menu" placeholder = "What is the name of you restaurant?" class = "form-control">
+              <button class="btn btn-default, login_button">Find Restaurant</button>
+            </form>
+          </div> -->
+
         </div>
 
 

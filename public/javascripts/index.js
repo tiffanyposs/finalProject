@@ -32,10 +32,7 @@
       var hour = time_array[0];
       var minutes = time_array[1];
 
-        if(hour[0] === "0"){
-          hour.splice(0)
-          console.log(hour)
-        }
+
 
       var amPm = "";
         if(parseInt(hour) < 12){
@@ -46,7 +43,19 @@
 
 
       var TimeObject = {
-        "0" : "12",
+        "00" : "12",
+        "01" : "1",
+        "02" : "2",
+        "03" : "3",
+        "04" : "4",
+        "05" : "5",
+        "06" : "6",
+        "07" : "7",
+        "08" : "8",
+        "09" : "9",
+        "10" : "10",
+        "11" : "11",
+        "12" : "12",
         "13" : "1",
         "14" : "2",
         "15" : "3",
@@ -62,9 +71,8 @@
 
 
 
-  if(parseInt(hour) > 12 || parseInt(hour) === 0){
-    hour = TimeObject[hour];
-  }
+  hour = TimeObject[hour];
+
 
   var formatted_time = hour + ":" + minutes + " " + amPm;
     return formatted_time;
