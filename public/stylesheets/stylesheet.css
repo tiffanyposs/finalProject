@@ -11,7 +11,57 @@ body{
 
 }
 
- 
+/*welcome page*/
+
+#welcome-body{
+	/*background-color: #53B8A5;*/
+	/*color: white;*/
+}
+
+#welcome-heading{
+	background-color: #362939;
+	color: white;
+	margin-top: 0;
+	margin-bottom: 30px;
+	height: 120px;
+	padding: 40px;
+}
+
+#welcome-box{
+	background-color: white;
+	margin-bottom: 30px;
+	/*border: 2px solid black;*/
+}
+
+#welcome-box h3{
+	line-height: 40px;
+}
+
+#logo{
+	width: 150px;
+	border: 4px solid #53B8A5;
+	border-top: 4px solid #C2DED4;
+	border-left: 4px solid #C2DED4;
+	text-align: center;
+	padding: 15px;
+	border-radius: 10px;
+}
+
+.welcome_button{
+	color: white;
+	font-size: 20px;
+	background-color: #362939;
+	border: 4px solid #53B8A5;
+	border-top: 4px solid #C2DED4;
+	border-left: 4px solid #C2DED4;	
+	text-align: center;
+	padding: 15px;
+	border-radius: 10px;
+}
+
+
+
+/*header*/ 
 #header a{
 	color: white;
 	text-decoration: none;

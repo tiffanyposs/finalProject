@@ -1,19 +1,3 @@
-        var MainUser = {}
-
-        var user_url = "/api_user_info"
-        var user_xhr = new XMLHttpRequest();
-        user_xhr.open("GET", user_url)
-
-        user_xhr.addEventListener('load', function(e){
-            var d = user_xhr.responseText;
-            var user_info = JSON.parse(d);
-            MainUser = user_info;
-            console.log(MainUser)
-        })
-
-        user_xhr.send();
-
-
         //THIS POPULATES THE FRIENDS
         //friends api call sent from server
         //this populates the friends on the page
@@ -26,14 +10,32 @@
         var friend_list = document.getElementById('friend_list');
         //gets added friends list from menu.ejs
         var new_friend_div = document.getElementById('chosen_friends');
-
         friends_xhr.addEventListener('load', function(e){
             var d = friends_xhr.responseText;
             var friends = JSON.parse(d);
 
- 
+                var MainUser = {}
+
+                var user_url = "/api_user_info"
+                var user_xhr = new XMLHttpRequest();
+                user_xhr.open("GET", user_url)
+
+                user_xhr.addEventListener('load', function(e){
+                    var d = user_xhr.responseText;
+                    var user_info = JSON.parse(d);
+                    MainUser = user_info;
+                    var main_user = [user_info];
+                    friends.splice(0, 0, main_user)
+                    console.log(friends)
+                    friendBlock();
+                })
+
+                user_xhr.send();
+
+
 
             //populates the friend from the server
+        var friendBlock = function(){
             friends.forEach(function(each){
                 var friend_div = document.createElement('div');
                 friend_list.appendChild(friend_div);
@@ -83,8 +85,8 @@
                 })
 
 
-            })
-            
+            })//end
+            }
         selfBox()
 
         })

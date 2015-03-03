@@ -44,7 +44,7 @@
 			<img src = "<%= parsed['diners'][user].avatar_url%>">
 				<% for( item in parsed['diners'][user].items){ %>
 				 <h4><%= item %></h4>
-				 <h5>$<%= parsed['diners'][user]['items'][item].total_owed + " x " + parsed['diners'][user]['items'][item].quantity_eaten%></h5>
+				 <h5>$<%= parsed['diners'][user]['items'][item].total_owed.toFixed(2) + " x " + parsed['diners'][user]['items'][item].quantity_eaten.toFixed(2)%></h5>
 				 <% } %>
 			<h4>Total: $<%= parsed['diners'][user]['total'].toFixed(2)%></h4>
 			<h4>Tax: $<%= parsed['diners'][user]['tax'].toFixed(2)%></h4>

@@ -39,7 +39,11 @@
           <div>
             <h3>Lets Start a New Receipt</h3>
             <form action="menu" method="POST" class = "form-group">
-                  <input id = "restaurant_form" name = "restaurant" placeholder = "Where did you just eat?" class="form-control">
+                  <input id = "restaurant_form" name = "restaurant" placeholder = "Where did you just eat?" class="form-control"
+                  <% if(users.username === "RonBurgundy"){ %>
+                  value = "Simply Fondue"
+                  <%}%>
+                  >
                   <button class="btn btn-default, login_button">New Receipt</button>    
             </form>
           </div>

@@ -48,10 +48,13 @@ app.get('/', function(req, res) {
 
   }
   else{
-    res.redirect('/login')
+    res.redirect('/welcome')
   }
 });
 
+app.get('/welcome', function(req, res){
+  res.render('welcome.ejs')
+})
 
 
 //this allows people to load friends
@@ -379,7 +382,7 @@ var menuRequest = request.post('https://api.locu.com/v2/venue/search', {form: JS
 
 })
 
-app.listen(3000)
+app.listen(80)
 
 
 
